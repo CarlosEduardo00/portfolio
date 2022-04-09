@@ -1,0 +1,194 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    /* border: 1px solid red; */
+}
+
+.buiu-logo {
+    display: flex;
+    flex-grow: initial;
+    width: 80px;
+    margin-block-end: 800px;
+    opacity: 50%;
+}
+
+main {
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(to right top, #afaeb1, #1b1a1b);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.glass {
+    background: whitesmoke;
+    min-height: 70vh;
+    width: 60%;
+    border-radius: 2rem;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+    display: inline-block;
+}
+
+.dashboard {
+    display: flex;
+    align-items: center;
+    background: linear-gradient( to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+    border-radius: 2rem;
+    position: relative;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img {
+    margin-top: 3px;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 1rem;
+    justify-content: center;
+    padding: 1rem;
+    opacity: 0.8;
+    color: #3e444b;
+    cursor: pointer;
+
+}
+
+p {
+    color: #696969;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+#img0 {
+    margin-top: 5px;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+}
+
+.img1 {
+    height: 40px;
+    width: 40px;
+    border-radius: 1px;
+    
+}
+
+.img2 {
+    height: 105px;
+    width: 105px;
+    border-radius: 10px;
+    margin-top: 0;
+    margin: auto;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.link {
+    display: flex;
+    padding: 0.5rem 1rem;
+    align-items: center;
+}
+
+.skill {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    color: #34383d;
+    font-weight: 600;
+    font-size: 2rem;
+    opacity: 0.8;
+}
+
+h3 {
+    color: #34383d;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.status input {
+    background: linear-gradient( to right bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+    border: none;
+    width: 50%;
+    padding: 0.5rem;
+    border-radius: 2rem;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.text-cards {
+    text-align: center;
+}
+
+.card {
+    flex-direction: column;
+    display: flex;
+    background: linear-gradient( to left top, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+    border-radius: 1rem;
+    margin: 0.5rem 0rem;
+    padding: 2rem;
+    max-height: 17rem;
+    margin-bottom: 0rem;
+    box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-15px);
+}
+
+.progress {
+    background: linear-gradient(to right top, #383838, #ffffff);
+    width: 100%;
+    height: 20%;
+    border-radius: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: rgb(236, 236, 236);
+    position: absolute;
+    left: 55%;
+}
+
+.percentage {
+    font-weight: bold;
+    background: linear-gradient(to right top, #838383, #2a2b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
