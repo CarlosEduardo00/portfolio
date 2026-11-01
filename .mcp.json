@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "magicui": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@magicuidesign/mcp@latest"]
+    },
+    "shadcn": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "shadcn@latest", "mcp"]
+    },
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}

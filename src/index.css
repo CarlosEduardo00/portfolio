@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  /* Paleta: preto puro com detalhes em branco (mesmo visual do README do GitHub) */
+  --color-ink: #000000;
+  --color-panel: #0a0a0a;
+  --color-line: rgb(255 255 255 / 0.1);
+
+  /* Cores de tema esperadas pelos componentes do shadcn / Magic UI */
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-border: rgb(255 255 255 / 0.1);
+  --color-muted-foreground: rgb(255 255 255 / 0.5);
+  --color-primary: #ffffff;
+  --color-primary-foreground: #000000;
+  --color-accent: rgb(255 255 255 / 0.06);
+  --color-accent-foreground: #ffffff;
+  --color-ring: #ffffff;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip; /* camadas de largura total (partículas) não criam rolagem lateral */
+  background: var(--color-ink);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ink);
+  color: #ededed;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgb(255 255 255 / 0.25);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #ffffff 20%, #6b6b6b 50%, #ffffff 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+}
+
+.marquee {
+  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@theme inline {
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  @keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+    }
+  }
+  @keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+    }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+    }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+    }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+    }
+  }
+}

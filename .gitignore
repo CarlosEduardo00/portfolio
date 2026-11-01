@@ -1,0 +1,8 @@
+node_modules
+dist
+*.local
+# configurações pessoais do Claude Code
+.claude/settings.local.json
+# o README do perfil vive no repositório CarlosEduardo00/CarlosEduardo00
+profile-readme/
+*.tsbuildinfo
