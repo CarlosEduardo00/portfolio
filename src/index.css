@@ -2,7 +2,7 @@
 
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Fraunces', ui-serif, Georgia, serif;
+  --font-serif: 'Chakra Petch', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
   --font-pixel: 'Silkscreen', ui-monospace, monospace;
 
@@ -59,47 +59,21 @@ body {
   font-style: normal;
   letter-spacing: 0.02em;
 }
-h3.pixel {
+.pixel-title {
   font-size: clamp(1.9rem, 4vw, 2.6rem);
   line-height: 1.15;
 }
 
-/* ---------- Variante B: Bold ---------- */
-/* títulos em grotesca pesada, sem itálico; cantos mais redondos; fundo com grade fina */
-html[data-design='b'] {
-  --font-serif: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
-}
-html[data-design='b'] .font-serif {
-  font-weight: 700;
-  letter-spacing: -0.035em;
-}
-html[data-design='b'] .font-serif em,
-html[data-design='b'] em.font-serif {
-  font-style: normal;
-}
-html[data-design='b'] .rounded-2xl {
-  border-radius: 1.5rem;
-}
-html[data-design='b'] body {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.025) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.025) 1px, transparent 1px);
-  background-size: 72px 72px;
-}
-
-/* ---------- Variante C: Arcade ---------- */
-/* títulos técnicos em caixa alta, cantos retos, cantoneiras de HUD e linhas de varredura */
-html[data-design='c'] {
-  --font-serif: 'Chakra Petch', ui-sans-serif, system-ui, sans-serif;
-}
-html[data-design='c'] .font-serif {
+/* ---------- Visual Arcade ---------- */
+/* títulos técnicos, cantos retos, cantoneiras de HUD e fundo de pontos */
+.font-serif {
   font-weight: 600;
 }
-html[data-design='c'] .rounded-2xl,
-html[data-design='c'] .rounded-xl {
+.rounded-2xl,
+.rounded-xl {
   border-radius: 4px;
 }
-html[data-design='c'] body {
+body {
   background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
   background-size: 24px 24px;
 }

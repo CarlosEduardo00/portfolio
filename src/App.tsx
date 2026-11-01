@@ -5,7 +5,6 @@ import Timeline from './components/Timeline'
 import Projects from './components/Projects'
 import Stack from './components/Stack'
 import Contact from './components/Contact'
-import DesignSwitch from './components/DesignSwitch'
 
 export default function App() {
   return (
@@ -19,7 +18,6 @@ export default function App() {
         <Stack />
         <Contact />
       </main>
-      <DesignSwitch />
     </div>
   )
 }

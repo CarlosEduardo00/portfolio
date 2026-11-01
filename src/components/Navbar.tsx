@@ -1,9 +1,8 @@
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type MouseEvent } from 'react'
 import { Menu, X } from 'lucide-react'
 import { profile } from '../data/profile'
 import { GithubIcon, LinkedinIcon } from './helpers'
-import { design } from '../design'
 
 const items = [
   ['sobre', '#sobre'],
@@ -32,6 +31,17 @@ export default function Navbar() {
     return () => io.disconnect()
   }, [])
 
+  // No celular: fecha o menu primeiro e só então rola até a seção
+  // (a animação de fechar o menu cancelava a rolagem do próprio link)
+  const goTo = (e: MouseEvent, href: string) => {
+    e.preventDefault()
+    setOpen(false)
+    setTimeout(() => {
+      document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      history.replaceState(null, '', href)
+    }, 260)
+  }
+
   return (
     <motion.header
       initial={{ y: -40, opacity: 0 }}
@@ -40,7 +50,7 @@ export default function Navbar() {
       className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/75 backdrop-blur-xl"
     >
       <nav className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#" className="flex items-baseline gap-3 text-sm">
+        <a href="#" className="flex min-h-11 items-center gap-3 text-sm">
           <span className="font-semibold lowercase">
             {profile.name}
             <span className="text-accent">.</span>
@@ -50,7 +60,7 @@ export default function Navbar() {
         <ul className="hidden gap-1 md:flex">
           {items.map(([label, href]) => (
             <li key={href} className="relative">
-              <a href={href} className={`relative z-10 block px-3 py-1.5 text-xs transition-colors ${design === 'c' ? 'pixel uppercase' : 'font-mono'} ${active === href ? 'text-cream' : 'text-muted hover:text-cream'}`}>
+              <a href={href} className={`relative z-10 block px-3 py-1.5 text-xs transition-colors pixel uppercase ${active === href ? 'text-cream' : 'text-muted hover:text-cream'}`}>
                 {label}
               </a>
               {active === href && (
@@ -76,7 +86,7 @@ export default function Navbar() {
           <motion.ul initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden border-t border-line px-4 md:hidden">
             {items.map(([label, href], i) => (
               <li key={href}>
-                <a href={href} onClick={() => setOpen(false)} className="flex items-baseline gap-3 py-3 font-serif text-3xl">
+                <a href={href} onClick={(e) => goTo(e, href)} className="flex items-baseline gap-3 py-3 font-serif text-3xl">
                   <span className="font-mono text-xs text-accent">0{i + 1}</span>
                   {label}
                 </a>

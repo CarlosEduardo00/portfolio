@@ -1,6 +1,5 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
-import { design } from '../design'
 
 export const ease = [0.22, 1, 0.36, 1] as const
 
@@ -19,35 +18,8 @@ export function Reveal({ children, delay = 0, className = '' }: { children: Reac
   )
 }
 
-// Cabeçalho + conteúdo de cada seção. Muda conforme a variante de design:
-// a: "01 / —— frase" e título grande em serifa com ponto colorido
-// b: coluna da esquerda com título fixo (sticky), conteúdo à direita
-// c: cabeçalho centralizado estilo HUD de jogo ("LEVEL 01")
+// Cabeçalho + conteúdo de cada seção, estilo HUD de jogo: "LEVEL 01" e título em caixa alta com cantoneiras
 export function Section({ id, n, eyebrow, title, children, className = '' }: { id: string; n: string; eyebrow: string; title: ReactNode; children: ReactNode; className?: string }) {
-  if (design === 'b') {
-    return (
-      <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
-        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-24 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-12">
-          <div>
-            <Reveal className="mb-10 lg:sticky lg:top-24">
-              <p className="font-mono text-xs text-accent">({n})</p>
-              <h2 className="mt-3 font-serif text-5xl leading-[0.95] tracking-tight lg:text-[2.75rem]">{title}</h2>
-              <p className="mt-4 max-w-[14rem] font-mono text-xs leading-relaxed text-muted">{eyebrow}</p>
-              <motion.span
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.9, delay: 0.2, ease }}
-                className="mt-6 block h-1 w-12 origin-left rounded-full bg-accent"
-              />
-            </Reveal>
-          </div>
-          <div className="min-w-0">{children}</div>
-        </div>
-      </section>
-    )
-  }
-  if (design === 'c') {
     return (
       <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
         <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-28">
@@ -60,31 +32,6 @@ export function Section({ id, n, eyebrow, title, children, className = '' }: { i
         </div>
       </section>
     )
-  }
-  return (
-    <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
-      <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-28">
-        <Reveal className="mb-12 md:mb-14">
-          <p className="mb-4 flex items-center gap-3 font-mono text-xs text-muted">
-            <span className="text-accent">{n}</span> /
-            <motion.span
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.2, ease }}
-              className="inline-block h-px w-10 origin-left bg-muted/60"
-            />
-            {eyebrow}
-          </p>
-          <h2 className="font-serif text-6xl leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
-            {title}
-            <span className="text-accent">.</span>
-          </h2>
-        </Reveal>
-        {children}
-      </div>
-    </section>
-  )
 }
 
 // Ícones de marca (o lucide-react v1 não traz mais logos)

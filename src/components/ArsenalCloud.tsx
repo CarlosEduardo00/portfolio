@@ -242,7 +242,7 @@ export default function ArsenalCloud({ items, max = 420 }: { items: CloudItem[];
   return (
     <canvas
       ref={ref}
-      className="touch-none select-none"
+      className="touch-pan-y select-none"
       role="img"
       aria-label={`Nuvem 3D de tecnologias: ${items.map((i) => i.name).join(', ')}. Arraste para girar.`}
     />

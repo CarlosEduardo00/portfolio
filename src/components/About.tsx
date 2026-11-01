@@ -3,7 +3,6 @@ import { useRef } from 'react'
 import { profile } from '../data/profile'
 import { Reveal, Section, ease } from './helpers'
 import ArcadeBox from './space/ArcadeBox'
-import { design, pick } from '../design'
 
 // Destaca em negrito os trechos entre **asteriscos**
 function Rich({ text }: { text: string }) {
@@ -61,7 +60,7 @@ function Portrait() {
             width={1023}
             height={1537}
             style={{ y: imgY }}
-            className="absolute inset-x-0 top-[-6%] h-[112%] w-full object-cover object-[50%_30%] grayscale transition-[filter] duration-700 group-hover:grayscale-0"
+            className="absolute inset-x-0 top-[-6%] h-[112%] w-full object-cover object-[50%_30%] [@media(hover:hover)]:grayscale transition-[filter] duration-700 group-hover:grayscale-0"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
         </div>
@@ -86,7 +85,7 @@ const aboutText = [
 export default function About() {
   return (
     <Section id="sobre" n="01" eyebrow="quem está por trás dos testes" title="Sobre">
-      <div className={pick({ a: 'grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16', b: 'grid gap-12', c: 'grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16' })}>
+      <div className="grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16">
         <div className="flex flex-col">
           <div className="space-y-5 font-mono text-[13.5px] leading-relaxed text-muted sm:text-sm">
             {aboutText.map((p, i) => (
@@ -97,7 +96,7 @@ export default function About() {
               </Reveal>
             ))}
           </div>
-          <dl className={pick({ a: 'mt-auto pt-12', b: 'mt-10 grid gap-x-8 sm:grid-cols-2', c: 'mt-auto pt-12' })}>
+          <dl className="mt-auto pt-12">
             {profile.facts.map(([k, v], i) => (
               <motion.div
                 key={k}
@@ -113,21 +112,19 @@ export default function About() {
             ))}
           </dl>
         </div>
-        {/* no Bold a foto já aparece no topo; no Arcade ela vem primeiro, como ficha do personagem */}
-        {design !== 'b' && (
-          <div className={design === 'c' ? 'lg:order-first' : ''}>
-            <Portrait />
-          </div>
-        )}
+        {/* a foto vem primeiro, como ficha do personagem */}
+        <div className="lg:order-first">
+          <Portrait />
+        </div>
       </div>
 
       {/* código e games: o porquê dos projetos, com o mini Galaga como easter egg */}
-      <div className={pick({ a: 'mt-24 grid items-center gap-10 lg:grid-cols-[1fr_1.55fr] lg:gap-14', b: 'mt-20 grid gap-10', c: 'mt-24 grid items-center gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-14' })}>
+      <div className="mt-24 grid items-center gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-14">
         <Reveal>
           <p className="pixel mb-4 font-mono text-xs text-muted">
             <span className="text-accent">↳</span> código e games
           </p>
-          <h3 className="pixel font-serif text-5xl leading-none sm:text-6xl">
+          <h3 className="pixel pixel-title font-serif text-5xl leading-none sm:text-6xl">
             Por que <em className="pixel text-accent">games</em>?
           </h3>
           <div className="mt-6 space-y-4 font-mono text-[13.5px] leading-relaxed text-muted sm:text-sm">
@@ -138,7 +135,7 @@ export default function About() {
             ))}
           </div>
         </Reveal>
-        <div className={design === 'c' ? 'lg:order-first' : ''}>
+        <div className="lg:order-first">
           <ArcadeBox />
         </div>
       </div>

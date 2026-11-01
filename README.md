@@ -17,20 +17,20 @@ Para adicionar um projeto, copie um item da lista `projects`. Sem `repo` o card 
 
 ## Visual e animações
 
-Estilo editorial: fundo grafite, títulos grandes em serifa (Fraunces), texto em Inter, detalhes em mono (IBM Plex Mono), um toque pixelado (Silkscreen) no bloco de games e um destaque quente (`--color-accent` em [`src/index.css`](src/index.css)), que combina com o tom da foto.
+Tema **Arcade**: fundo grafite com pontos, títulos em caixa alta (Chakra Petch), texto em Inter, detalhes em IBM Plex Mono e fonte pixelada (Silkscreen) em rótulos de jogo. Destaque quente em `--color-accent` ([`src/index.css`](src/index.css)).
 
 | Onde | Efeito |
 |---|---|
-| Topo | Nome sobe letra por letra de dentro de uma máscara e acompanha o mouse de leve; faixa com localização, foco e anos de experiência |
-| Menu | Seção atual marcada com um ponto, barra de progresso da rolagem |
-| Sobre | Foto em preto e branco que ganha cor ao passar o mouse, desliza com a rolagem e inclina com o cursor |
-| Missões | Cards em destaque com capa, inclinação suave e moldura de seleção (como escolher um item num jogo); demais projetos em lista |
-| Sobre · games | Bloco "Por que games?" com o mini Galaga numa "tela de fliperama": a nave segue o mouse só ali dentro e cada clique atira. Sem mouse, ela joga sozinha |
-| Experiência | Linhas que se destacam no hover, da mais recente para a mais antiga |
-| Stack | Colunas por senioridade e nuvem 3D (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente |
+| Topo | Tela de "seleção de jogador": PLAYER 1, nome grande, ficha com foto e níveis (Java > Python > JavaScript > Astro), PRESS START |
+| Seções | Cabeçalho "LEVEL 0X" com cantoneiras de HUD; menu com a seção atual marcada |
+| Sobre | Foto (cinza com mouse, colorida no celular), ficha e bloco "Por que games?" com o mini Galaga |
+| Mini Galaga | A nave segue o mouse só dentro da caixa e cada clique atira; sem mouse, joga sozinha |
+| Missões | Cards em destaque com moldura de seleção (como escolher um item num jogo); demais projetos em lista |
+| Experiência | Registro de quests: a atual "em andamento", as outras "completa" |
+| Stack | Inventário por categoria (cada tecnologia é um slot com ícone) e nuvem 3D para girar |
 | Contato | Formulário que monta o e-mail (sem servidor), status e redes |
 
-Quem ativa "reduzir movimento" no sistema recebe a versão sem animações pesadas. A foto fica em `public/carlos.webp`.
+Testado em celulares de 320 a 430 px de largura, celular deitado e desktop. Quem ativa "reduzir movimento" recebe a versão sem animações pesadas.
 
 ## MCPs de front-end
 
