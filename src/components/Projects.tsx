@@ -3,7 +3,6 @@ import { useState, type PointerEvent } from 'react'
 import { ArrowUpRight, Lock } from 'lucide-react'
 import { projects, type Project } from '../data/profile'
 import { GithubIcon, Reveal, Section, ease } from './helpers'
-import ArcadeBox from './space/ArcadeBox'
 
 const filters = ['todos', 'web', 'python', 'back-end', 'front-end'] as const
 type Filter = (typeof filters)[number]
@@ -246,7 +245,6 @@ export default function Projects() {
         </div>
       )}
 
-      <ArcadeBox />
     </Section>
   )
 }

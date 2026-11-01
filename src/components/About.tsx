@@ -2,6 +2,7 @@ import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'moti
 import { useRef } from 'react'
 import { profile } from '../data/profile'
 import { Reveal, Section, ease } from './helpers'
+import ArcadeBox from './space/ArcadeBox'
 
 // Destaca em negrito os trechos entre **asteriscos**
 function Rich({ text }: { text: string }) {
@@ -80,7 +81,6 @@ function Portrait() {
 const aboutText = [
   'Sou **Java Developer** e **QA Engineer**. Hoje trabalho como **Analista de QA e Integrações**: testo, automatizo e integro sistemas com Java, Selenium e PostgreSQL para que funcionem de ponta a ponta.',
   'Comecei em 2022 com HTML e CSS e fui subindo: JavaScript, React, Python, Node e Java. Sou formado em **Análise e Desenvolvimento de Sistemas** e já fui **professor de programação** no ensino técnico, ensinando banco de dados, front-end e back-end.',
-  'Nos projetos pessoais junto o que mais gosto: **código e games**. Isso virou uma enciclopédia de Zelda com API em Spring Boot, uma wiki completa de MU Online e um app desktop que vigia o jogo com visão computacional.',
 ]
 
 export default function About() {
@@ -114,6 +114,26 @@ export default function About() {
           </dl>
         </div>
         <Portrait />
+      </div>
+
+      {/* código e games: o porquê dos projetos, com o mini Galaga como easter egg */}
+      <div className="mt-24 grid items-center gap-10 lg:grid-cols-[1fr_1.55fr] lg:gap-14">
+        <Reveal>
+          <p className="mb-4 font-mono text-xs text-muted">
+            <span className="text-accent">↳</span> código e games
+          </p>
+          <h3 className="font-serif text-5xl leading-none sm:text-6xl">
+            Por que <em className="text-accent">games</em>?
+          </h3>
+          <div className="mt-6 space-y-4 font-mono text-[13.5px] leading-relaxed text-muted sm:text-sm">
+            {profile.games.map((p, i) => (
+              <p key={i}>
+                <Rich text={p} />
+              </p>
+            ))}
+          </div>
+        </Reveal>
+        <ArcadeBox />
       </div>
     </Section>
   )

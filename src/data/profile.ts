@@ -9,6 +9,12 @@ export const profile = {
   focus: 'Java · QA',
   status: 'Analista de QA e Integrações',
   tagline: ['testando, integrando e', 'construindo em Java.'], // a 2ª parte aparece em itálico
+  // Bloco "por que games?" do Sobre (fica ao lado do mini Galaga)
+  games: [
+    'Games sempre foram minha porta de entrada pra tecnologia: foi jogando que fiquei curioso pra entender o que acontece por trás da tela, as regras, os sistemas e os dados.',
+    'Por isso meus projetos pessoais nascem deles: uma **enciclopédia de Zelda** com API em Spring Boot, uma **wiki completa de MU Online** e um **app que vigia o jogo** com visão computacional. É o jeito mais divertido que encontrei de praticar Java, Python e QA.',
+    'E, como todo bom jogo, este site tem um easter egg: a nave do fliperama. Pode jogar.',
+  ],
   facts: [
     ['nome', 'Carlos Silva'],
     ['apelido', 'Carlinhos'],

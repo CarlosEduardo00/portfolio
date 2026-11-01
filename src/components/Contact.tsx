@@ -100,9 +100,9 @@ export default function Contact() {
           </Card>
           <div className="grid gap-4">
             <Card delay={0.16}>
-              <p className="font-mono text-[11px] text-muted">03 · no código desde</p>
-              <p className="mt-4 font-serif text-5xl italic text-accent">{profile.since}</p>
-              <p className="mt-3 font-mono text-[12px] text-muted">primeiro commit em html e css. de lá pra cá, não parei.</p>
+              <p className="font-mono text-[11px] text-muted">03 · resposta</p>
+              <p className="mt-4 font-serif text-5xl italic text-accent">~24h</p>
+              <p className="mt-3 font-mono text-[12px] text-muted">respondo pessoalmente, em dias úteis.</p>
             </Card>
             <Card delay={0.2}>
               <p className="mb-2 font-mono text-[11px] text-muted">04 · redes</p>

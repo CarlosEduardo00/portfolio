@@ -25,7 +25,7 @@ Estilo editorial: fundo grafite, títulos grandes em serifa (Instrument Serif), 
 | Menu | Seção atual marcada com um ponto, barra de progresso da rolagem |
 | Sobre | Foto em preto e branco que ganha cor ao passar o mouse, desliza com a rolagem e inclina com o cursor |
 | Missões | Cards em destaque com capa, inclinação suave e moldura de seleção (como escolher um item num jogo); demais projetos em lista |
-| Curiosidade | Mini Galaga numa "tela de fliperama" dentro de Missões: a nave segue o mouse só ali dentro e cada clique atira. Sem mouse, ela joga sozinha |
+| Sobre · games | Bloco "Por que games?" com o mini Galaga numa "tela de fliperama": a nave segue o mouse só ali dentro e cada clique atira. Sem mouse, ela joga sozinha |
 | Experiência | Linhas que se destacam no hover, da mais recente para a mais antiga |
 | Stack | Colunas por senioridade e nuvem 3D (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente |
 | Contato | Formulário que monta o e-mail (sem servidor), status e redes |
