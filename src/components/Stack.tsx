@@ -1,6 +1,7 @@
 import { motion } from 'motion/react'
 import { stack } from '../data/profile'
 import { Reveal, Section, ease } from './helpers'
+import { pick } from '../design'
 import ArsenalCloud, { type CloudItem } from './ArsenalCloud'
 
 // Ícones do Simple Icons para a nuvem 3D
@@ -17,7 +18,7 @@ export default function Stack() {
   const groups = Object.entries(stack)
   return (
     <Section id="stack" n="04" eyebrow="ferramentas que uso bem" title="Stack">
-      <div className="grid items-center gap-10 lg:grid-cols-[1.7fr_1fr]">
+      <div className={`grid items-center gap-10 ${pick({ a: 'lg:grid-cols-[1.7fr_1fr]', b: '', c: 'lg:grid-cols-[1fr_1.7fr]' })}`}>
         <Reveal>
           <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-panel/60 md:grid-cols-4">
             {groups.map(([group, items], gi) => (

@@ -1,5 +1,6 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
+import { design } from '../design'
 
 export const ease = [0.22, 1, 0.36, 1] as const
 
@@ -18,8 +19,48 @@ export function Reveal({ children, delay = 0, className = '' }: { children: Reac
   )
 }
 
-// Seção numerada: "01 / —— frase curta" e título grande em serifa terminando com um ponto colorido
+// Cabeçalho + conteúdo de cada seção. Muda conforme a variante de design:
+// a: "01 / —— frase" e título grande em serifa com ponto colorido
+// b: coluna da esquerda com título fixo (sticky), conteúdo à direita
+// c: cabeçalho centralizado estilo HUD de jogo ("LEVEL 01")
 export function Section({ id, n, eyebrow, title, children, className = '' }: { id: string; n: string; eyebrow: string; title: ReactNode; children: ReactNode; className?: string }) {
+  if (design === 'b') {
+    return (
+      <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
+        <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-24 lg:grid lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-12">
+          <div>
+            <Reveal className="mb-10 lg:sticky lg:top-24">
+              <p className="font-mono text-xs text-accent">({n})</p>
+              <h2 className="mt-3 font-serif text-5xl leading-[0.95] tracking-tight lg:text-[2.75rem]">{title}</h2>
+              <p className="mt-4 max-w-[14rem] font-mono text-xs leading-relaxed text-muted">{eyebrow}</p>
+              <motion.span
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.9, delay: 0.2, ease }}
+                className="mt-6 block h-1 w-12 origin-left rounded-full bg-accent"
+              />
+            </Reveal>
+          </div>
+          <div className="min-w-0">{children}</div>
+        </div>
+      </section>
+    )
+  }
+  if (design === 'c') {
+    return (
+      <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-28">
+          <Reveal className="mb-14 flex flex-col items-center text-center">
+            <p className="pixel text-[11px] text-accent">LEVEL {n}</p>
+            <h2 className="hud-corners relative mt-4 px-6 py-3 font-serif text-4xl font-semibold uppercase tracking-wide sm:text-6xl">{title}</h2>
+            <p className="mt-4 font-mono text-xs text-muted">{'> '}{eyebrow}</p>
+          </Reveal>
+          {children}
+        </div>
+      </section>
+    )
+  }
   return (
     <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
       <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-28">

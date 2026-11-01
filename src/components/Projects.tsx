@@ -3,6 +3,7 @@ import { useState, type PointerEvent } from 'react'
 import { ArrowUpRight, Lock } from 'lucide-react'
 import { projects, type Project } from '../data/profile'
 import { GithubIcon, Reveal, Section, ease } from './helpers'
+import { pick } from '../design'
 
 const filters = ['todos', 'web', 'python', 'back-end', 'front-end'] as const
 type Filter = (typeof filters)[number]
@@ -184,7 +185,7 @@ function Row({ p, i }: { p: Project; i: number }) {
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: i * 0.04, ease }}
-      className="group relative grid gap-2 border-t border-line py-5 md:grid-cols-[5rem_1fr_1.5fr_10rem] md:items-center md:gap-6"
+      className={`group relative grid gap-2 border-t border-line py-5 ${pick({ a: 'md:grid-cols-[5rem_1fr_1.5fr_10rem]', b: 'md:grid-cols-[4.5rem_1fr_9rem]', c: 'md:grid-cols-[5rem_1fr_1.5fr_10rem]' })} md:items-center md:gap-6`}
     >
       <span className="pointer-events-none absolute inset-x-0 inset-y-0 origin-left scale-x-0 bg-gradient-to-r from-accent/[0.07] to-transparent transition-transform duration-500 group-hover:scale-x-100" />
       <span className="relative font-mono text-[11px] text-muted">
@@ -193,7 +194,7 @@ function Row({ p, i }: { p: Project; i: number }) {
       <h4 className="relative font-serif text-2xl leading-tight transition-transform duration-300 group-hover:translate-x-1.5">
         {p.name} <em className="text-base text-muted">{kind[p.category]}</em>
       </h4>
-      <p className="relative font-mono text-[12px] text-muted">
+      <p className={`relative font-mono text-[12px] text-muted ${pick({ a: '', b: 'md:hidden', c: '' })}`}>
         {p.tagline} · <span className="text-cream/70">{p.stack.join(', ').toLowerCase()}</span>
       </p>
       <div className="relative md:flex md:justify-end">
@@ -221,7 +222,7 @@ export default function Projects() {
       </Reveal>
 
       {featured.length > 0 && (
-        <motion.div layout className="missions grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <motion.div layout className={`missions grid gap-5 ${pick({ a: 'md:grid-cols-2 lg:grid-cols-3', b: 'md:grid-cols-2 md:[&>*:first-child]:col-span-2', c: 'md:grid-cols-2 lg:grid-cols-3' })}`}>
           <AnimatePresence mode="popLayout">
             {featured.map((p, i) => (
               <FeaturedCard key={p.name} p={p} index={i} />

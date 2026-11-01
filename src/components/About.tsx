@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { profile } from '../data/profile'
 import { Reveal, Section, ease } from './helpers'
 import ArcadeBox from './space/ArcadeBox'
+import { design, pick } from '../design'
 
 // Destaca em negrito os trechos entre **asteriscos**
 function Rich({ text }: { text: string }) {
@@ -85,7 +86,7 @@ const aboutText = [
 export default function About() {
   return (
     <Section id="sobre" n="01" eyebrow="quem está por trás dos testes" title="Sobre">
-      <div className="grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+      <div className={pick({ a: 'grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16', b: 'grid gap-12', c: 'grid gap-12 lg:grid-cols-[1fr_1.25fr] lg:gap-16' })}>
         <div className="flex flex-col">
           <div className="space-y-5 font-mono text-[13.5px] leading-relaxed text-muted sm:text-sm">
             {aboutText.map((p, i) => (
@@ -96,7 +97,7 @@ export default function About() {
               </Reveal>
             ))}
           </div>
-          <dl className="mt-auto pt-12">
+          <dl className={pick({ a: 'mt-auto pt-12', b: 'mt-10 grid gap-x-8 sm:grid-cols-2', c: 'mt-auto pt-12' })}>
             {profile.facts.map(([k, v], i) => (
               <motion.div
                 key={k}
@@ -112,11 +113,16 @@ export default function About() {
             ))}
           </dl>
         </div>
-        <Portrait />
+        {/* no Bold a foto já aparece no topo; no Arcade ela vem primeiro, como ficha do personagem */}
+        {design !== 'b' && (
+          <div className={design === 'c' ? 'lg:order-first' : ''}>
+            <Portrait />
+          </div>
+        )}
       </div>
 
       {/* código e games: o porquê dos projetos, com o mini Galaga como easter egg */}
-      <div className="mt-24 grid items-center gap-10 lg:grid-cols-[1fr_1.55fr] lg:gap-14">
+      <div className={pick({ a: 'mt-24 grid items-center gap-10 lg:grid-cols-[1fr_1.55fr] lg:gap-14', b: 'mt-20 grid gap-10', c: 'mt-24 grid items-center gap-10 lg:grid-cols-[1.55fr_1fr] lg:gap-14' })}>
         <Reveal>
           <p className="pixel mb-4 font-mono text-xs text-muted">
             <span className="text-accent">↳</span> código e games
@@ -132,7 +138,9 @@ export default function About() {
             ))}
           </div>
         </Reveal>
-        <ArcadeBox />
+        <div className={design === 'c' ? 'lg:order-first' : ''}>
+          <ArcadeBox />
+        </div>
       </div>
     </Section>
   )

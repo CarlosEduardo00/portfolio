@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { MotionConfig } from 'motion/react'
 import App from './App'
 import './index.css'
+import { applyDesign } from './design'
+
+applyDesign()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -3,6 +3,7 @@ import { useState, type FormEvent, type ReactNode } from 'react'
 import { ArrowUpRight, Camera, Mail, MessageCircle, Play, Send, Tv } from 'lucide-react'
 import { profile } from '../data/profile'
 import { GithubIcon, LinkedinIcon, Section, ease } from './helpers'
+import { pick } from '../design'
 
 const email = profile.links.email.replace('mailto:', '')
 
@@ -76,7 +77,7 @@ export default function Contact() {
   return (
     <>
       <Section id="contato" n="05" eyebrow="vamos conversar" title="Contato">
-        <div className="grid gap-4 lg:grid-cols-[1fr_1.5fr_1fr]">
+        <div className={`grid gap-4 ${pick({ a: 'lg:grid-cols-[1fr_1.5fr_1fr]', b: 'md:grid-cols-2', c: 'lg:grid-cols-[1fr_1.5fr_1fr]' })}`}>
           <div className="grid gap-4">
             <Card>
               <p className="flex items-center justify-between font-mono text-[11px] text-muted">
@@ -98,7 +99,7 @@ export default function Contact() {
           <Card delay={0.12} className="flex flex-col">
             <Composer />
           </Card>
-          <div className="grid gap-4">
+          <div className={`grid gap-4 ${pick({ a: '', b: 'md:col-span-2 md:grid-cols-2', c: '' })}`}>
             <Card delay={0.16}>
               <p className="font-mono text-[11px] text-muted">03 · resposta</p>
               <p className="mt-4 font-serif text-5xl italic text-accent">~24h</p>

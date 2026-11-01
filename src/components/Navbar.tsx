@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { profile } from '../data/profile'
 import { GithubIcon, LinkedinIcon } from './helpers'
+import { design } from '../design'
 
 const items = [
   ['sobre', '#sobre'],
@@ -49,7 +50,7 @@ export default function Navbar() {
         <ul className="hidden gap-1 md:flex">
           {items.map(([label, href]) => (
             <li key={href} className="relative">
-              <a href={href} className={`relative z-10 block px-3 py-1.5 font-mono text-xs transition-colors ${active === href ? 'text-cream' : 'text-muted hover:text-cream'}`}>
+              <a href={href} className={`relative z-10 block px-3 py-1.5 text-xs transition-colors ${design === 'c' ? 'pixel uppercase' : 'font-mono'} ${active === href ? 'text-cream' : 'text-muted hover:text-cream'}`}>
                 {label}
               </a>
               {active === href && (
