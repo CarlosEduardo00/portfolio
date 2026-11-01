@@ -10,7 +10,7 @@ export default function Timeline() {
   const fill = useSpring(scrollYProgress, { stiffness: 100, damping: 30 })
 
   return (
-    <Section id="trajetoria" eyebrow="rota de voo" title={<>De <span className="text-gradient">HTML</span> a full-stack</>}>
+    <Section id="trajetoria" eyebrow="rota de voo" title={<>Do <span className="text-gradient">HTML</span> ao QA</>}>
       <div ref={ref} className="relative">
         <div className="absolute left-4 top-0 h-full w-px bg-line md:left-1/2" />
         <motion.div

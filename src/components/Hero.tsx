@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'motion/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ArrowDown, MapPin } from 'lucide-react'
 import { profile } from '../data/profile'
@@ -33,11 +33,19 @@ function RotatingRole() {
   )
 }
 
-// Botão que "puxa" na direção do mouse
+// Botão com leve atração magnética: firme, sem balanço (mola rígida e bem amortecida)
+const TIGHT = { stiffness: 520, damping: 34, mass: 0.6 }
+const MAX_PULL = 6 // px
+
 function Magnetic({ children, href, primary }: { children: ReactNode; href: string; primary?: boolean }) {
   const ref = useRef<HTMLAnchorElement>(null)
-  const x = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 })
-  const y = useSpring(useMotionValue(0), { stiffness: 200, damping: 15 })
+  const mx = useMotionValue(0)
+  const my = useMotionValue(0)
+  const x = useSpring(mx, TIGHT)
+  const y = useSpring(my, TIGHT)
+  // o conteúdo acompanha um pouco menos que o botão: dá sensação de peso
+  const cx = useTransform(x, (v) => v * 0.45)
+  const cy = useTransform(y, (v) => v * 0.45)
   return (
     <motion.a
       ref={ref}
@@ -46,22 +54,31 @@ function Magnetic({ children, href, primary }: { children: ReactNode; href: stri
       rel="noreferrer"
       style={{ x, y }}
       onPointerMove={(e) => {
+        if (e.pointerType === 'touch') return
         const r = ref.current!.getBoundingClientRect()
-        x.set((e.clientX - r.left - r.width / 2) * 0.3)
-        y.set((e.clientY - r.top - r.height / 2) * 0.3)
+        const nx = (e.clientX - r.left) / r.width - 0.5
+        const ny = (e.clientY - r.top) / r.height - 0.5
+        mx.set(nx * MAX_PULL * 2)
+        my.set(ny * MAX_PULL)
       }}
       onPointerLeave={() => {
-        x.set(0)
-        y.set(0)
+        mx.set(0)
+        my.set(0)
       }}
-      whileTap={{ scale: 0.95 }}
+      initial="rest"
+      whileHover="hover"
+      whileTap="tap"
+      variants={{ rest: { scale: 1 }, hover: { scale: 1.035 }, tap: { scale: 0.96 } }}
+      transition={TIGHT}
       className={
         primary
-          ? 'inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-ink shadow-[0_0_40px_-8px_rgb(255_255_255/0.35)]'
-          : 'inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-6 py-3 font-medium backdrop-blur hover:bg-white/10'
+          ? 'group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-medium text-ink shadow-[0_0_40px_-8px_rgb(255_255_255/0.35)] transition-shadow duration-200 hover:shadow-[0_0_46px_-6px_rgb(255_255_255/0.6)]'
+          : 'group inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-6 py-3 font-medium backdrop-blur transition-colors duration-200 hover:border-white/40 hover:bg-white/10'
       }
     >
-      {children}
+      <motion.span style={{ x: cx, y: cy }} className="inline-flex items-center gap-2">
+        {children}
+      </motion.span>
     </motion.a>
   )
 }
@@ -82,13 +99,13 @@ function HeroTerminal() {
       >
         <Terminal className="max-w-none bg-panel/80 text-[12px] backdrop-blur-xl sm:text-[13px]">
           <TypingAnimation className="text-white">{'> npx carlinhos --launch'}</TypingAnimation>
-          <AnimatedSpan className="text-white/85">✔ Piloto a bordo: Carlos Eduardo</AnimatedSpan>
+          <AnimatedSpan className="text-white/85">✔ Piloto a bordo: Carlos Silva</AnimatedSpan>
           <AnimatedSpan className="text-white/85">✔ Motores: Java · Spring Boot · Python</AnimatedSpan>
           <AnimatedSpan className="text-white/85">✔ Painel: React · TypeScript · Astro</AnimatedSpan>
-          <AnimatedSpan className="text-white/85">✔ Escudos (QA): Selenium · pytest · Vitest</AnimatedSpan>
-          <AnimatedSpan className="text-white/85">✔ Missões ativas: 3 projetos full-stack</AnimatedSpan>
+          <AnimatedSpan className="text-white/85">✔ Escudos (QA e integrações): Selenium · pytest</AnimatedSpan>
+          <AnimatedSpan className="text-white/85">✔ Missões ativas: 3 projetos pessoais</AnimatedSpan>
           <AnimatedSpan className="text-white">» Status: pronto para decolar</AnimatedSpan>
-          <TypingAnimation className="text-white/45">Clique no espaço para atirar · role para as missões ↓</TypingAnimation>
+          <TypingAnimation className="text-white/45">Clique para atirar · role para as missões ↓</TypingAnimation>
         </Terminal>
         <BorderBeam duration={8} size={120} colorFrom="#ffffff" colorTo="#525252" />
       </motion.div>
@@ -99,7 +116,7 @@ function HeroTerminal() {
 export default function Hero() {
   const words = profile.name.split(' ')
   return (
-    <section className="relative mx-auto flex min-h-svh max-w-6xl flex-col justify-center gap-14 px-4 pb-32 pt-52 sm:px-6 lg:flex-row lg:items-center">
+    <section className="relative mx-auto flex min-h-svh max-w-6xl cursor-crosshair flex-col justify-center gap-14 px-4 pb-32 pt-52 sm:px-6 lg:flex-row lg:items-center">
       {/* Mini Galaga: formação de inimigos no alto e a nave embaixo, atrás do conteúdo */}
       <GalagaField />
       <div className="relative flex-1">
@@ -161,7 +178,7 @@ export default function Hero() {
           className="flex flex-wrap items-center gap-3"
         >
           <Magnetic href="#projetos" primary>
-            Ver missões <ArrowDown className="size-4" />
+            Ver missões <ArrowDown className="size-4 transition-transform duration-200 group-hover:translate-y-0.5" />
           </Magnetic>
           <Magnetic href={profile.links.github}>
             <GithubIcon /> GitHub

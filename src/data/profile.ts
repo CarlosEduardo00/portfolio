@@ -1,16 +1,16 @@
 // Tudo o que aparece no site vem deste arquivo. Edite aqui para atualizar textos, projetos e trajetória.
 
 export const profile = {
-  name: 'Carlos Eduardo',
+  name: 'Carlos Silva',
   nickname: 'Carlinhos',
   githubUser: 'CarlosEduardo00',
   location: 'Brasil',
-  roles: ['Desenvolvedor Java', 'QA Tester', 'Full-stack em construção', 'Criador de projetos de fã'],
+  roles: ['Java Developer', 'QA Engineer', 'Analista de QA e Integrações', 'Ex-professor de programação'],
   headline:
-    'Construo aplicações completas, do scraping e da API até a interface, e garanto que funcionem com olhar de QA.',
+    'Java Developer e QA Engineer. Desenvolvo em Java e Spring, testo e integro sistemas para que funcionem de ponta a ponta.',
   about: [
     'Comecei em 2022 com HTML e CSS, publicando cada exercício na Vercel. De lá pra cá passei por JavaScript, React, Python, Node e Java, sempre aprendendo construindo.',
-    'Hoje trabalho como Analista de QA e Suporte usando Java, Selenium e PostgreSQL, e curso Análise e Desenvolvimento de Sistemas.',
+    'Fui professor de programação no ensino técnico, ensinando banco de dados, front-end e back-end. Hoje trabalho como Analista de QA e Integrações, com Java, Selenium e PostgreSQL, e sou formado em Análise e Desenvolvimento de Sistemas.',
     'Nos projetos pessoais junto as duas coisas de que mais gosto: código e games. Isso virou uma enciclopédia de Zelda com mapa interativo, uma base de dados completa de MU Online e um app desktop que monitora o jogo.',
   ],
   links: {
@@ -30,7 +30,7 @@ export type Project = {
   description: string
   highlights?: string[]
   stack: string[]
-  category: 'Full-stack' | 'Python' | 'Front-end' | 'Back-end'
+  category: 'Web' | 'Python' | 'Front-end' | 'Back-end'
   year: number
   repo?: string // vazio = repositório privado
   live?: string
@@ -45,7 +45,7 @@ export const projects: Project[] = [
       'Aplicação de fã com importador de dados, PostgreSQL, API REST documentada e front-end com mapa do jogo, 900 Korok Seeds, 136 shrines, tracker de progresso e calculadora de receitas.',
     highlights: ['API com 21 rotas + Swagger', 'Mapa com Leaflet e clusters', 'Migrations com Flyway'],
     stack: ['Java 21', 'Spring Boot 3', 'PostgreSQL', 'React', 'TypeScript', 'Tailwind', 'Docker'],
-    category: 'Full-stack',
+    category: 'Web',
     year: 2026,
     featured: true,
   },
@@ -56,7 +56,7 @@ export const projects: Project[] = [
       'Scrapers educados coletam e normalizam dados de fontes de fãs (com autorização), validam contra JSON Schema e publicam um site em Astro com API estática no Cloudflare Workers.',
     highlights: ['3.074 itens · 291 monstros · 23.759 drops', 'Planner de builds', 'Ambientes de homologação e produção'],
     stack: ['Python', 'Astro', 'TypeScript', 'JSON Schema', 'SQLite', 'Cloudflare Workers', 'pytest'],
-    category: 'Full-stack',
+    category: 'Web',
     year: 2026,
     repo: 'https://github.com/CarlosEduardo00/mu-explorer',
     live: 'https://mu-explorer.buiu.workers.dev',
@@ -190,14 +190,20 @@ export const timeline: Milestone[] = [
     tags: ['React', 'Python', 'Node.js', 'Java'],
   },
   {
-    period: 'Carreira',
-    title: 'Analista de QA e Suporte',
-    text: 'Entrei no mercado testando e dando suporte a sistemas: automação com Selenium, Java no dia a dia e consultas em PostgreSQL.',
-    tags: ['Java', 'Selenium', 'PostgreSQL', 'QA'],
+    period: 'Docência',
+    title: 'Professor de programação',
+    text: 'Dei aulas para alunos de curso técnico em uma faculdade, ensinando banco de dados, front-end e back-end: da modelagem e SQL até páginas web e APIs.',
+    tags: ['Banco de dados', 'SQL', 'Front-end', 'Back-end', 'Ensino'],
+  },
+  {
+    period: 'Hoje',
+    title: 'Analista de QA e Integrações',
+    text: 'Testo e integro sistemas no dia a dia: automação com Selenium, Java, validação de integrações entre serviços e consultas em PostgreSQL.',
+    tags: ['Java', 'Selenium', 'Integrações', 'PostgreSQL', 'QA'],
   },
   {
     period: '2026',
-    title: 'Projetos full-stack de verdade',
+    title: 'Projetos pessoais',
     text: 'Hyrule Explorer, MU Explorer e MU Sentinel: back-end em Spring Boot, scrapers em Python, deploy na Cloudflare, visão computacional e releases automatizadas, com desenvolvimento assistido por IA.',
     tags: ['Spring Boot', 'TypeScript', 'Python', 'Cloudflare', 'IA'],
   },

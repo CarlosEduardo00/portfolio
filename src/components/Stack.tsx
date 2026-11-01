@@ -1,14 +1,17 @@
 import { motion } from 'motion/react'
 import { stack } from '../data/profile'
 import { Section } from './helpers'
-import { lazy, Suspense } from 'react'
-
-// Carregada sob demanda: a nuvem 3D é o componente mais pesado do site
-const IconCloud = lazy(() => import('@/components/ui/icon-cloud').then((m) => ({ default: m.IconCloud })))
+import ArsenalCloud, { type CloudItem } from './ArsenalCloud'
 
 // Ícones do Simple Icons, todos em branco para combinar com o tema preto e branco
-const slugs = ['openjdk', 'spring', 'python', 'nodedotjs', 'postgresql', 'sqlite', 'flyway', 'react', 'typescript', 'astro', 'tailwindcss', 'vite', 'html5', 'css', 'javascript', 'selenium', 'pytest', 'vitest', 'docker', 'git', 'github', 'cloudflare', 'claude', 'opencv', 'qt']
-const cloudImages = slugs.map((s) => `https://cdn.simpleicons.org/${s}/white`)
+const tech: [string, string][] = [
+  ['openjdk', 'Java'], ['spring', 'Spring Boot'], ['python', 'Python'], ['nodedotjs', 'Node.js'], ['postgresql', 'PostgreSQL'],
+  ['sqlite', 'SQLite'], ['flyway', 'Flyway'], ['react', 'React'], ['typescript', 'TypeScript'], ['astro', 'Astro'],
+  ['tailwindcss', 'Tailwind'], ['vite', 'Vite'], ['html5', 'HTML'], ['css', 'CSS'], ['javascript', 'JavaScript'],
+  ['selenium', 'Selenium'], ['pytest', 'pytest'], ['vitest', 'Vitest'], ['docker', 'Docker'], ['git', 'Git'],
+  ['github', 'GitHub'], ['cloudflare', 'Cloudflare'], ['claude', 'Claude AI'], ['opencv', 'OpenCV'], ['qt', 'Qt'],
+]
+const cloudItems: CloudItem[] = tech.map(([slug, name]) => ({ name, src: `https://cdn.simpleicons.org/${slug}/white` }))
 
 const all = Object.values(stack).flat()
 
@@ -44,12 +47,13 @@ export default function Stack() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="flex justify-center [&_canvas]:max-w-full [&_canvas]:h-auto"
+        className="flex flex-col items-center gap-3"
       >
-        {/* Magic UI: nuvem 3D de ícones; arraste para girar */}
-        <Suspense fallback={<div className="aspect-square w-full max-w-[400px]" />}>
-          <IconCloud images={cloudImages} showControl={false} />
-        </Suspense>
+        {/* Arraste para girar (com inércia); clique num ícone para trazê-lo à frente */}
+        <div className="flex w-full justify-center">
+          <ArsenalCloud items={cloudItems} />
+        </div>
+        <p className="font-mono text-xs text-white/35">arraste para girar · clique num ícone</p>
       </motion.div>
       <div className="grid gap-5">
         {Object.entries(stack).map(([group, items], gi) => (

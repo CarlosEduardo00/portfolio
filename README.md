@@ -1,4 +1,4 @@
-# Portfólio · Carlos Eduardo
+# Portfólio · Carlos Silva
 
 Site pessoal feito com **React 19 + TypeScript + Vite + Tailwind CSS 4 + Motion** (antigo Framer Motion).
 
@@ -22,12 +22,13 @@ Visual preto e branco com temática de naves (no estilo Galaga), igual ao README
 | Onde | Efeito |
 |---|---|
 | Fundo | Campo de estrelas caindo em três velocidades, estrelas cadentes e brilho que segue o mouse |
-| Topo | Mini Galaga: a nave segue o mouse e atira na formação de inimigos (clique também atira); parada, ela joga sozinha. Placar e recorde ficam no navegador |
+| Topo | Mini Galaga: a nave segue o cursor por todo o topo (com inércia, inclinação e propulsor) e atira na formação de inimigos. Cada clique solta uma micro explosão e um tiro. Se o cursor sai do topo, ela decola; quando volta, reentra por baixo. Parada ou no celular, joga sozinha. Placar e recorde ficam no navegador |
+| Botões do topo | Atração magnética curta e firme, com mola rígida (sem balanço) |
 | Menu | Nave como logo e uma navezinha que avança pela barra de progresso da rolagem |
 | Terminal | Digita o "lançamento" do perfil (`npx carlinhos --launch`) |
 | Trajetória | Linha que preenche conforme a rolagem, cards entrando dos lados |
-| Missões (projetos) | Cards com inclinação 3D, brilho que segue o cursor e feixes de luz nas missões principais |
-| Arsenal (stack) | Faixas infinitas, nuvem 3D de ícones e chips com mola |
+| Missões (projetos) | Seletor com 4 efeitos: Holograma (3D suave com reflexo), Radar (mira e varredura), Flip (vira e mostra a ficha da missão) e Magnético. A escolha fica salva no navegador |
+| Arsenal (stack) | Faixas infinitas e nuvem 3D própria (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente, nome ao passar o mouse |
 
 O jogo pausa quando o topo sai da tela. Quem ativa "reduzir movimento" no sistema recebe a versão sem animações pesadas.
 
@@ -40,7 +41,6 @@ Instalados com `npx shadcn@latest add @magicui/<nome>` em `src/components/ui/`:
 | `terminal` | Terminal que digita o perfil no topo |
 | `border-beam` | Feixes de luz na borda do terminal e dos projetos em destaque |
 | `hyper-text` | Títulos pequenos das seções, que embaralham ao aparecer |
-| `icon-cloud` | Nuvem 3D de tecnologias na seção Stack (carregada sob demanda) |
 | `shimmer-button` | Botão de e-mail no contato |
 
 Para adicionar mais: peça ao Claude Code (com o MCP do Magic UI ativo) ou rode `npx shadcn@latest add @magicui/<nome>`.
