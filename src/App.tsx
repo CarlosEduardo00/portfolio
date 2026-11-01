@@ -5,7 +5,6 @@ import Timeline from './components/Timeline'
 import Projects from './components/Projects'
 import Stack from './components/Stack'
 import Contact from './components/Contact'
-import FontLab from './components/FontLab'
 
 export default function App() {
   return (
@@ -19,7 +18,6 @@ export default function App() {
         <Stack />
         <Contact />
       </main>
-      <FontLab />
     </div>
   )
 }

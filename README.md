@@ -17,7 +17,7 @@ Para adicionar um projeto, copie um item da lista `projects`. Sem `repo` o card 
 
 ## Visual e animações
 
-Estilo editorial: fundo grafite, títulos grandes em serifa (Instrument Serif), textos em mono (JetBrains Mono) e um destaque quente (`--color-accent` em [`src/index.css`](src/index.css)), que combina com o tom da foto.
+Estilo editorial: fundo grafite, títulos grandes em serifa (Fraunces), texto em Inter, detalhes em mono (IBM Plex Mono), um toque pixelado (Silkscreen) no bloco de games e um destaque quente (`--color-accent` em [`src/index.css`](src/index.css)), que combina com o tom da foto.
 
 | Onde | Efeito |
 |---|---|

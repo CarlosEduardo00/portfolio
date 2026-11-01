@@ -154,7 +154,7 @@ export default function ArsenalCloud({ items, max = 420 }: { items: CloudItem[];
         if (img.complete && img.naturalWidth) ctx.drawImage(img, p.x - s / 2, p.y - s / 2, s, s)
         if (hoverAmt[p.i] > 0.05) {
           ctx.globalAlpha = hoverAmt[p.i]
-          ctx.font = '600 12px "JetBrains Mono", monospace'
+          ctx.font = '500 12px "IBM Plex Mono", monospace'
           ctx.textAlign = 'center'
           const label = items[p.i].name
           const tw = ctx.measureText(label).width + 16

@@ -318,7 +318,7 @@ export default function GalagaField() {
       }
       drawShip()
       // placar
-      ctx.font = '600 11px "JetBrains Mono", monospace'
+      ctx.font = '11px Silkscreen, monospace'
       ctx.fillStyle = 'rgba(255,255,255,0.45)'
       ctx.textAlign = 'left'
       ctx.fillText(`SCORE ${String(score).padStart(6, '0')}`, 18, 30)
