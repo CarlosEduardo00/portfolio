@@ -52,6 +52,16 @@ body {
   filter: grayscale(1) brightness(0.85);
 }
 
+/* Seletor de fontes (?fontes): cada combinação troca as três famílias do site */
+html[data-font='fraunces'] { --font-serif: 'Fraunces', serif; --font-sans: 'Inter', sans-serif; --font-mono: 'IBM Plex Mono', monospace; }
+html[data-font='playfair'] { --font-serif: 'Playfair Display', serif; --font-sans: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace; }
+html[data-font='dmserif'] { --font-serif: 'DM Serif Display', serif; --font-sans: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace; }
+html[data-font='cormorant'] { --font-serif: 'Cormorant Garamond', serif; }
+html[data-font='newsreader'] { --font-serif: 'Newsreader', serif; --font-sans: 'Geist', sans-serif; --font-mono: 'Geist Mono', monospace; }
+/* toque gamer: fonte pixelada só no bloco de games */
+html[data-pixel] .pixel { font-family: 'Silkscreen', monospace; font-style: normal; letter-spacing: 0.02em; }
+html[data-pixel] h3.pixel { font-size: clamp(1.9rem, 4vw, 2.6rem); line-height: 1.15; }
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

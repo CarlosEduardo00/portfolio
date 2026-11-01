@@ -3,6 +3,7 @@
 export const profile = {
   name: 'Carlos Silva',
   nickname: 'Carlinhos',
+  age: 26,
   githubUser: 'CarlosEduardo00',
   location: 'Brasil',
   since: 2022, // ano do primeiro commit

@@ -12,7 +12,7 @@ export default function ArcadeBox() {
       transition={{ duration: 0.9, ease }}
     >
       <div className="overflow-hidden rounded-2xl border border-line bg-panel">
-        <div className="flex items-center justify-between border-b border-line px-4 py-2.5 font-mono text-[11px] text-muted">
+        <div className="pixel flex items-center justify-between border-b border-line px-4 py-2.5 font-mono text-[11px] text-muted">
           <span>
             <span className="text-accent">~/</span>games/galaga.exe
           </span>

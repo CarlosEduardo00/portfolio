@@ -63,15 +63,12 @@ function Portrait() {
             className="absolute inset-x-0 top-[-6%] h-[112%] w-full object-cover object-[50%_30%] grayscale transition-[filter] duration-700 group-hover:grayscale-0"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
-          <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-ink/70 px-3 py-1 font-mono text-[11px] backdrop-blur">
-            <span className="text-accent">●</span> oi
-          </span>
         </div>
         <figcaption className="mt-3 flex justify-between font-mono text-[11px] text-muted">
           <span>
             {profile.location.toLowerCase()} · {new Date().getFullYear()}
           </span>
-          <span>↳ esse sou eu</span>
+          <span>↳ carlos, {profile.age} anos</span>
         </figcaption>
       </motion.figure>
     </motion.div>
@@ -81,6 +78,8 @@ function Portrait() {
 const aboutText = [
   'Sou **Java Developer** e **QA Engineer**. Hoje trabalho como **Analista de QA e Integrações**: testo, automatizo e integro sistemas com Java, Selenium e PostgreSQL para que funcionem de ponta a ponta.',
   'Comecei em 2022 com HTML e CSS e fui subindo: JavaScript, React, Python, Node e Java. Sou formado em **Análise e Desenvolvimento de Sistemas** e já fui **professor de programação** no ensino técnico, ensinando banco de dados, front-end e back-end.',
+  'Com o tempo, me especializei em **qualidade de software**: automações e projetos reais, pensados para escalar e continuar fáceis de manter no longo prazo, sempre com **boas práticas**. Minha base é Java, mas sigo ampliando o repertório com projetos diversos. Não me prendo à ferramenta: o que me move é a capacidade de **criar e inovar**.',
+  'Fora do expediente, junto as duas coisas de que mais gosto: **código e games**. É dessa mistura que nascem meus projetos pessoais.',
 ]
 
 export default function About() {
@@ -119,11 +118,11 @@ export default function About() {
       {/* código e games: o porquê dos projetos, com o mini Galaga como easter egg */}
       <div className="mt-24 grid items-center gap-10 lg:grid-cols-[1fr_1.55fr] lg:gap-14">
         <Reveal>
-          <p className="mb-4 font-mono text-xs text-muted">
+          <p className="pixel mb-4 font-mono text-xs text-muted">
             <span className="text-accent">↳</span> código e games
           </p>
-          <h3 className="font-serif text-5xl leading-none sm:text-6xl">
-            Por que <em className="text-accent">games</em>?
+          <h3 className="pixel font-serif text-5xl leading-none sm:text-6xl">
+            Por que <em className="pixel text-accent">games</em>?
           </h3>
           <div className="mt-6 space-y-4 font-mono text-[13.5px] leading-relaxed text-muted sm:text-sm">
             {profile.games.map((p, i) => (
