@@ -99,3 +99,8 @@ body {
     }
   }
 }
+/* Missões: ao selecionar um card, os outros escurecem um pouco (foco de menu de jogo) */
+.missions:has(.mission:hover) .mission:not(:hover) .mission-body {
+  opacity: 0.55;
+  filter: grayscale(1) brightness(0.85);
+}

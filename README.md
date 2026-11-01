@@ -27,7 +27,7 @@ Visual preto e branco com temática de naves (no estilo Galaga), igual ao README
 | Menu | Nave como logo e uma navezinha que avança pela barra de progresso da rolagem |
 | Terminal | Digita o "lançamento" do perfil (`npx carlinhos --launch`) |
 | Trajetória | Linha que preenche conforme a rolagem, cards entrando dos lados |
-| Missões (projetos) | Seletor com 4 efeitos: Holograma (3D suave com reflexo), Radar (mira e varredura), Flip (vira e mostra a ficha da missão) e Magnético. A escolha fica salva no navegador |
+| Missões (projetos) | Holograma: inclinação 3D suave com reflexo. Ao passar o mouse, o card ganha uma moldura de seleção que brilha devagar (como escolher um item num jogo) e os outros escurecem |
 | Arsenal (stack) | Faixas infinitas e nuvem 3D própria (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente, nome ao passar o mouse |
 
 O jogo pausa quando o topo sai da tela. Quem ativa "reduzir movimento" no sistema recebe a versão sem animações pesadas.
