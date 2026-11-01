@@ -28,5 +28,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
