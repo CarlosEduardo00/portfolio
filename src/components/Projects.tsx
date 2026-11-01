@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'motion/react'
-import { useState, type PointerEvent } from 'react'
-import { ArrowUpRight, Lock } from 'lucide-react'
+import { useEffect, useState, type PointerEvent } from 'react'
+import { ArrowUpRight, LayoutGrid, List, Lock } from 'lucide-react'
 import { projects, type Project } from '../data/profile'
 import { GithubIcon, Reveal, Section, ease } from './helpers'
 
@@ -174,8 +174,39 @@ function FeaturedCard({ p, index }: { p: Project; index: number }) {
   )
 }
 
+// Projetos menores na grade: card compacto
+function MiniCard({ p, i }: { p: Project; i: number }) {
+  return (
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: (i % 3) * 0.05, ease }}
+      whileHover={{ y: -4 }}
+      className="group flex flex-col border border-line bg-panel p-4 transition-colors hover:border-accent/50"
+    >
+      <p className="flex items-center justify-between font-mono text-[11px] text-muted">
+        <span>
+          <span className="text-accent">●</span> {p.year}
+        </span>
+        <span>{kind[p.category]}</span>
+      </p>
+      <h4 className="mt-2 font-serif text-xl leading-tight transition-colors group-hover:text-accent">{p.name}</h4>
+      <p className="mt-1 font-mono text-[12px] text-muted">{p.tagline}</p>
+      <p className="mb-4 mt-3 font-mono text-[11px] text-cream/60">{p.stack.join(' · ').toLowerCase()}</p>
+      <div className="mt-auto border-t border-line pt-3">
+        <Links p={p} />
+      </div>
+    </motion.li>
+  )
+}
+
+type View = 'grade' | 'lista'
+
 // Projetos menores: uma linha por projeto, estilo índice
-function Row({ p, i }: { p: Project; i: number }) {
+function Row({ p, i, star }: { p: Project; i: number; star?: boolean }) {
   return (
     <motion.li
       layout
@@ -184,16 +215,17 @@ function Row({ p, i }: { p: Project; i: number }) {
       exit={{ opacity: 0, transition: { duration: 0.2 } }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: i * 0.04, ease }}
-      className={`group relative grid gap-2 border-t border-line py-5 $"md:grid-cols-[5rem_1fr_1.5fr_10rem]" md:items-center md:gap-6`}
+      className="group relative -mx-3 grid gap-2 border-t border-line px-3 py-5 md:grid-cols-[5rem_1fr_1.5fr_10rem] md:items-center md:gap-6"
     >
-      <span className="pointer-events-none absolute inset-x-0 inset-y-0 origin-left scale-x-0 bg-gradient-to-r from-accent/[0.07] to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+      {/* destaque do hover: passa um pouco das bordas do texto */}
+      <span className="pointer-events-none absolute inset-0 origin-left scale-x-0 border-l-2 border-accent bg-gradient-to-r from-accent/[0.08] to-transparent transition-transform duration-500 group-hover:scale-x-100" />
       <span className="relative font-mono text-[11px] text-muted">
-        <span className="text-accent">●</span> {p.year}
+        <span className="text-accent">{star ? '★' : '●'}</span> {p.year}
       </span>
       <h4 className="relative font-serif text-2xl leading-tight transition-transform duration-300 group-hover:translate-x-1.5">
         {p.name} <em className="text-base text-muted">{kind[p.category]}</em>
       </h4>
-      <p className={`relative font-mono text-[12px] text-muted $""`}>
+      <p className="relative font-mono text-[12px] text-muted">
         {p.tagline} · <span className="text-cream/70">{p.stack.join(', ').toLowerCase()}</span>
       </p>
       <div className="relative md:flex md:justify-end">
@@ -205,46 +237,97 @@ function Row({ p, i }: { p: Project; i: number }) {
 
 export default function Projects() {
   const [filter, setFilter] = useState<Filter>('todos')
+  // lembra a escolha de exibição neste navegador
+  const [view, setView] = useState<View>(() => {
+    try {
+      return localStorage.getItem('missoes-view') === 'lista' ? 'lista' : 'grade'
+    } catch {
+      return 'grade'
+    }
+  })
+  useEffect(() => {
+    try {
+      localStorage.setItem('missoes-view', view)
+    } catch {}
+  }, [view])
+
   const list = projects.filter((p) => filter === 'todos' || p.category.toLowerCase() === filter)
   const featured = list.filter((p) => p.featured)
   const others = list.filter((p) => !p.featured)
 
   return (
     <Section id="projetos" n="02" eyebrow="o que andei construindo" title={<>Missões <em className="text-accent">concluídas</em></>}>
-      <Reveal className="mb-10 flex flex-wrap gap-1.5">
-        {filters.map((f) => (
-          <button key={f} onClick={() => setFilter(f)} className="relative rounded-full border border-line px-3.5 py-1.5 font-mono text-xs">
-            {filter === f && <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-cream" transition={{ type: 'spring', stiffness: 320, damping: 30 }} />}
-            <span className={`relative ${filter === f ? 'text-ink' : 'text-muted hover:text-cream'}`}>{f}</span>
-          </button>
-        ))}
+      <Reveal className="mb-10 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-1.5">
+          {filters.map((f) => (
+            <button key={f} onClick={() => setFilter(f)} className="relative min-h-9 rounded-full border border-line px-3.5 py-1.5 font-mono text-xs">
+              {filter === f && <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-cream" transition={{ type: 'spring', stiffness: 320, damping: 30 }} />}
+              <span className={`relative ${filter === f ? 'text-ink' : 'text-muted hover:text-cream'}`}>{f}</span>
+            </button>
+          ))}
+        </div>
+        {/* troca de exibição: grade ou lista */}
+        <div role="group" aria-label="Exibição" className="flex border border-line bg-panel p-1">
+          {(
+            [
+              ['grade', LayoutGrid],
+              ['lista', List],
+            ] as const
+          ).map(([v, Icon]) => (
+            <button
+              key={v}
+              onClick={() => setView(v)}
+              aria-pressed={view === v}
+              className={`relative flex min-h-9 items-center gap-2 px-3 text-[11px] transition-colors ${view === v ? 'text-ink' : 'text-muted hover:text-cream'}`}
+            >
+              {view === v && <motion.span layoutId="view-pill" className="absolute inset-0 bg-accent" transition={{ type: 'spring', stiffness: 380, damping: 32 }} />}
+              <Icon className="relative size-3.5" />
+              <span className="pixel relative uppercase">{v}</span>
+            </button>
+          ))}
+        </div>
       </Reveal>
 
-      {featured.length > 0 && (
-        <motion.div layout className={`missions grid gap-5 $"md:grid-cols-2 lg:grid-cols-3"`}>
-          <AnimatePresence mode="popLayout">
-            {featured.map((p, i) => (
-              <FeaturedCard key={p.name} p={p} index={i} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-      )}
-
-      {others.length > 0 && (
-        <div className="mt-16">
+      {view === 'grade' ? (
+        <>
+          {featured.length > 0 && (
+            <motion.div layout className="missions grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              <AnimatePresence mode="popLayout">
+                {featured.map((p, i) => (
+                  <FeaturedCard key={p.name} p={p} index={i} />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          )}
+          {others.length > 0 && (
+            <div className="mt-14">
+              <p className="mb-4 font-mono text-xs text-muted">
+                <span className="text-accent">+</span> outras missões · {others.length}
+              </p>
+              <motion.ul layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <AnimatePresence mode="popLayout">
+                  {others.map((p, i) => (
+                    <MiniCard key={p.name} p={p} i={i} />
+                  ))}
+                </AnimatePresence>
+              </motion.ul>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
           <p className="mb-2 font-mono text-xs text-muted">
-            <span className="text-accent">+</span> outras missões · {others.length}
+            <span className="text-accent">★</span> destaque · {list.length} missões
           </p>
           <motion.ul layout className="border-b border-line">
             <AnimatePresence mode="popLayout">
-              {others.map((p, i) => (
-                <Row key={p.name} p={p} i={i} />
+              {[...featured, ...others].map((p, i) => (
+                <Row key={p.name} p={p} i={i} star={p.featured} />
               ))}
             </AnimatePresence>
           </motion.ul>
-        </div>
+        </>
       )}
-
     </Section>
   )
 }

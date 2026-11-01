@@ -18,6 +18,42 @@ const extras = [
   { label: 'Discord', href: profile.links.discord, icon: <MessageCircle className="size-3.5" /> },
 ]
 
+// Canequinha de café flutuando, com vapor subindo
+function CoffeeMug() {
+  const steam = ['M14 14c-3-3 3-5 0-8', 'M21 14c-3-3 3-5 0-8', 'M28 14c-3-3 3-5 0-8']
+  return (
+    <motion.svg
+      viewBox="0 0 48 52"
+      className="h-14 w-12 shrink-0 text-accent"
+      aria-hidden
+      animate={{ y: [0, -6, 0], rotate: [-3, 3, -3] }}
+      transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+    >
+      {/* vapor */}
+      {steam.map((d, i) => (
+        <motion.path
+          key={d}
+          d={d}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: [0, 0.8, 0], y: [4, -2, -8] }}
+          transition={{ duration: 2.4, repeat: Infinity, delay: i * 0.6, ease: 'easeOut' }}
+        />
+      ))}
+      {/* caneca */}
+      <g transform="translate(0 16)">
+        <path d="M6 4h30v18a10 10 0 0 1-10 10H16A10 10 0 0 1 6 22V4Z" fill="#131315" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+        <path d="M36 9h3a6 6 0 0 1 0 12h-3" fill="none" stroke="currentColor" strokeWidth="2.5" />
+        <path d="M9 8h24" stroke="#f2ede6" strokeOpacity=".35" strokeWidth="2" strokeLinecap="round" />
+        <rect x="16" y="15" width="10" height="2" fill="currentColor" opacity=".6" />
+      </g>
+    </motion.svg>
+  )
+}
+
 function Card({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   return (
     <motion.div
@@ -76,7 +112,7 @@ export default function Contact() {
   return (
     <>
       <Section id="contato" n="05" eyebrow="vamos conversar" title="Contato">
-        <div className={`grid gap-4 $"lg:grid-cols-[1fr_1.5fr_1fr]"`}>
+        <div className={`grid gap-4 lg:grid-cols-[1fr_1.5fr_1fr]`}>
           <div className="grid gap-4">
             <Card>
               <p className="flex items-center justify-between font-mono text-[11px] text-muted">
@@ -87,7 +123,12 @@ export default function Contact() {
                 </span>
               </p>
               <p className="mt-4 font-serif text-5xl italic text-accent">disponível</p>
-              <p className="mt-3 font-mono text-[12px] leading-relaxed text-muted">Aberto a vagas de Java, QA e integrações, além de projetos e boas conversas.</p>
+              <div className="mt-3 flex items-end gap-3">
+                <p className="flex-1 font-mono text-[12px] leading-relaxed text-muted">
+                  Aberto a novos projetos e desafios de <span className="text-cream">Java, QA e integrações de sistemas</span>, além de um bom café e boas conversas.
+                </p>
+                <CoffeeMug />
+              </div>
             </Card>
             <Card delay={0.08}>
               <p className="font-mono text-[11px] text-muted">02 · atuação</p>
@@ -98,11 +139,11 @@ export default function Contact() {
           <Card delay={0.12} className="flex flex-col">
             <Composer />
           </Card>
-          <div className={`grid gap-4 $""`}>
+          <div className={`grid gap-4`}>
             <Card delay={0.16}>
               <p className="font-mono text-[11px] text-muted">03 · resposta</p>
               <p className="mt-4 font-serif text-5xl italic text-accent">~24h</p>
-              <p className="mt-3 font-mono text-[12px] text-muted">respondo pessoalmente, em dias úteis.</p>
+              <p className="mt-3 font-mono text-[12px] text-muted">respondo pessoalmente, em período comercial útil.</p>
             </Card>
             <Card delay={0.2}>
               <p className="mb-2 font-mono text-[11px] text-muted">04 · redes</p>
