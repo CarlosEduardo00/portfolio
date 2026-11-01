@@ -1,4 +1,3 @@
-import Background from './components/Background'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -9,17 +8,16 @@ import Contact from './components/Contact'
 
 export default function App() {
   return (
-    <>
-      <Background />
+    <div className="grain">
       <Navbar />
       <main className="relative">
         <Hero />
         <About />
-        <Timeline />
         <Projects />
+        <Timeline />
         <Stack />
         <Contact />
       </main>
-    </>
+    </div>
   )
 }

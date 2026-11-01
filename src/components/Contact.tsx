@@ -1,71 +1,145 @@
 import { motion } from 'motion/react'
-import { Mail, Play, Camera, Tv, MessageCircle } from 'lucide-react'
+import { useState, type FormEvent, type ReactNode } from 'react'
+import { ArrowUpRight, Camera, Mail, MessageCircle, Play, Send, Tv } from 'lucide-react'
 import { profile } from '../data/profile'
-import { GithubIcon, LinkedinIcon } from './helpers'
-import { ShimmerButton } from '@/components/ui/shimmer-button'
+import { GithubIcon, LinkedinIcon, Section, ease } from './helpers'
+
+const email = profile.links.email.replace('mailto:', '')
 
 const socials = [
-  { label: 'GitHub', href: profile.links.github, icon: <GithubIcon /> },
-  { label: 'LinkedIn', href: profile.links.linkedin, icon: <LinkedinIcon /> },
-  { label: 'YouTube', href: profile.links.youtube, icon: <Play className="size-5" /> },
-  { label: 'Instagram', href: profile.links.instagram, icon: <Camera className="size-5" /> },
-  { label: 'Twitch', href: profile.links.twitch, icon: <Tv className="size-5" /> },
-  { label: 'Discord', href: profile.links.discord, icon: <MessageCircle className="size-5" /> },
+  { label: 'github', sub: '@' + profile.githubUser, href: profile.links.github, icon: <GithubIcon className="size-3.5" /> },
+  { label: 'linkedin', sub: '/in/carlos-silva', href: profile.links.linkedin, icon: <LinkedinIcon className="size-3.5" /> },
+  { label: 'e-mail', sub: email, href: profile.links.email, icon: <Mail className="size-3.5" /> },
 ]
+const extras = [
+  { label: 'YouTube', href: profile.links.youtube, icon: <Play className="size-3.5" /> },
+  { label: 'Instagram', href: profile.links.instagram, icon: <Camera className="size-3.5" /> },
+  { label: 'Twitch', href: profile.links.twitch, icon: <Tv className="size-3.5" /> },
+  { label: 'Discord', href: profile.links.discord, icon: <MessageCircle className="size-3.5" /> },
+]
+
+function Card({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.8, delay, ease }}
+      className={`rounded-2xl border border-line bg-panel p-5 ${className}`}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+const label = 'mb-1.5 block font-mono text-[11px] text-accent'
+const field =
+  'w-full rounded-lg border border-line bg-ink/60 px-3 py-2.5 font-mono text-[13px] text-cream placeholder:text-muted/60 outline-none transition focus:border-accent/60 focus:ring-2 focus:ring-accent/15'
+
+// Sem servidor: o formulário monta o e-mail e abre no app de e-mail de quem visita
+function Composer() {
+  const [name, setName] = useState('')
+  const [msg, setMsg] = useState('')
+  const submit = (e: FormEvent) => {
+    e.preventDefault()
+    const subject = encodeURIComponent(`Contato pelo portfólio${name ? ` · ${name}` : ''}`)
+    const body = encodeURIComponent(msg)
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`
+  }
+  return (
+    <form onSubmit={submit} className="flex h-full flex-col">
+      <div className="-mx-5 -mt-5 mb-5 flex items-center justify-between border-b border-line px-5 py-2.5 font-mono text-[11px] text-muted">
+        <span>~/contato.sh</span>
+        <span aria-hidden>— ▢ ✕</span>
+      </div>
+      <label className={label} htmlFor="c-name">
+        nome
+      </label>
+      <input id="c-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="seu nome" className={field} />
+      <label className={`${label} mt-4`} htmlFor="c-msg">
+        mensagem
+      </label>
+      <textarea id="c-msg" required value={msg} onChange={(e) => setMsg(e.target.value)} rows={5} placeholder="conta o que você precisa…" className={`${field} flex-1 resize-none`} />
+      <motion.button
+        type="submit"
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.98 }}
+        className="group mt-4 flex items-center justify-center gap-2 rounded-lg bg-accent py-2.5 font-mono text-sm font-medium text-ink"
+      >
+        enviar <Send className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      </motion.button>
+    </form>
+  )
+}
 
 export default function Contact() {
   return (
-    <section id="contato" className="mx-auto max-w-6xl scroll-mt-24 px-4 pb-16 pt-24 sm:px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative overflow-hidden rounded-3xl border border-line bg-panel/70 px-6 py-16 text-center backdrop-blur sm:px-12"
-      >
-        <div className="absolute -top-24 left-1/2 size-72 -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
-        <p className="relative font-mono text-sm text-white">{'// transmissão'}</p>
-        <h2 className="relative mt-3 text-4xl font-bold tracking-tight sm:text-6xl">
-          Bora construir <span className="text-gradient">algo junto?</span>
-        </h2>
-        <p className="relative mx-auto mt-4 max-w-lg text-white/60">
-          Estou aberto a vagas, freelas e projetos colaborativos. Manda uma mensagem.
-        </p>
-        {/* Magic UI: botão com brilho girando pela borda */}
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative mt-8 inline-block">
-          <ShimmerButton
-            onClick={() => (window.location.href = profile.links.email)}
-            background="#000000"
-            shimmerColor="#ffffff"
-            shimmerDuration="2.5s"
-            className="gap-2 px-7 py-3.5 font-medium shadow-[0_0_50px_-10px_rgb(255_255_255/0.35)]"
-          >
-            <Mail className="size-5" /> Enviar e-mail
-          </ShimmerButton>
-        </motion.div>
-        <div className="relative mt-10 flex flex-wrap justify-center gap-3">
-          {socials.map((s, i) => (
-            <motion.a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={s.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 + i * 0.07 }}
-              whileHover={{ y: -6, scale: 1.1 }}
-              className="rounded-full border border-line bg-white/5 p-3 text-white/60 hover:text-white"
-            >
-              {s.icon}
-            </motion.a>
-          ))}
+    <>
+      <Section id="contato" n="05" eyebrow="vamos conversar" title="Contato">
+        <div className="grid gap-4 lg:grid-cols-[1fr_1.5fr_1fr]">
+          <div className="grid gap-4">
+            <Card>
+              <p className="flex items-center justify-between font-mono text-[11px] text-muted">
+                01 · status
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-70" />
+                  <span className="relative inline-flex size-2 rounded-full bg-accent" />
+                </span>
+              </p>
+              <p className="mt-4 font-serif text-5xl italic text-accent">disponível</p>
+              <p className="mt-3 font-mono text-[12px] leading-relaxed text-muted">Aberto a vagas de Java, QA e integrações, além de projetos e boas conversas.</p>
+            </Card>
+            <Card delay={0.08}>
+              <p className="font-mono text-[11px] text-muted">02 · atuação</p>
+              <p className="mt-4 font-serif text-3xl leading-tight">{profile.status}</p>
+              <p className="mt-3 font-mono text-[12px] text-muted">java · selenium · postgresql</p>
+            </Card>
+          </div>
+          <Card delay={0.12} className="flex flex-col">
+            <Composer />
+          </Card>
+          <div className="grid gap-4">
+            <Card delay={0.16}>
+              <p className="font-mono text-[11px] text-muted">03 · no código desde</p>
+              <p className="mt-4 font-serif text-5xl italic text-accent">{profile.since}</p>
+              <p className="mt-3 font-mono text-[12px] text-muted">primeiro commit em html e css. de lá pra cá, não parei.</p>
+            </Card>
+            <Card delay={0.2}>
+              <p className="mb-2 font-mono text-[11px] text-muted">04 · redes</p>
+              <ul>
+                {socials.map((s) => (
+                  <li key={s.label}>
+                    <a href={s.href} target="_blank" rel="noreferrer" className="group flex items-center gap-3 border-b border-line py-2.5 last:border-0">
+                      <span className="grid size-7 shrink-0 place-items-center rounded-full border border-line text-muted transition group-hover:border-accent/60 group-hover:text-accent">{s.icon}</span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-[13px] font-medium">{s.label}</span>
+                        <span className="block truncate font-mono text-[11px] text-muted">{s.sub}</span>
+                      </span>
+                      <ArrowUpRight className="size-3.5 text-muted transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-3 flex gap-2">
+                {extras.map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noreferrer" aria-label={s.label} className="grid size-7 place-items-center rounded-full border border-line text-muted transition hover:-translate-y-0.5 hover:border-accent/60 hover:text-accent">
+                    {s.icon}
+                  </a>
+                ))}
+              </div>
+            </Card>
+          </div>
         </div>
-      </motion.div>
-      <footer className="mt-12 text-center font-mono text-xs text-white/30">
-        Feito com React, Tailwind e Motion · {new Date().getFullYear()} · {profile.name}
+      </Section>
+      <footer className="border-t border-line">
+        <div className="mx-auto flex max-w-6xl flex-col justify-between gap-2 px-4 py-6 font-mono text-[11px] text-muted sm:flex-row sm:px-6">
+          <span className="font-sans text-sm font-semibold lowercase text-cream">
+            {profile.name}
+            <span className="text-accent">.</span>
+          </span>
+          <span>© {new Date().getFullYear()} · feito com react, tailwind e motion</span>
+        </div>
       </footer>
-    </section>
+    </>
   )
 }

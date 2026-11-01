@@ -15,35 +15,22 @@ npm run build    # gera dist/ para publicar (Vercel, Netlify, Cloudflare Pages)
 Todos os textos, projetos, trajetória e stack ficam em [`src/data/profile.ts`](src/data/profile.ts).
 Para adicionar um projeto, copie um item da lista `projects`. Sem `repo` o card mostra um cadeado (repositório privado).
 
-## Tema e animações
+## Visual e animações
 
-Visual preto e branco com temática de naves (no estilo Galaga), igual ao README do perfil no GitHub.
+Estilo editorial: fundo grafite, títulos grandes em serifa (Instrument Serif), textos em mono (JetBrains Mono) e um destaque quente (`--color-accent` em [`src/index.css`](src/index.css)), que combina com o tom da foto.
 
 | Onde | Efeito |
 |---|---|
-| Fundo | Campo de estrelas caindo em três velocidades, estrelas cadentes e brilho que segue o mouse |
-| Topo | Mini Galaga: a nave segue o cursor por todo o topo (com inércia, inclinação e propulsor) e atira na formação de inimigos. Cada clique solta uma micro explosão e um tiro. Se o cursor sai do topo, ela decola; quando volta, reentra por baixo. Parada ou no celular, joga sozinha. Placar e recorde ficam no navegador |
-| Botões do topo | Atração magnética curta e firme, com mola rígida (sem balanço) |
-| Menu | Nave como logo e uma navezinha que avança pela barra de progresso da rolagem |
-| Terminal | Digita o "lançamento" do perfil (`npx carlinhos --launch`) |
-| Trajetória | Linha que preenche conforme a rolagem, cards entrando dos lados |
-| Missões (projetos) | Holograma: inclinação 3D suave com reflexo. Ao passar o mouse, o card ganha uma moldura de seleção que brilha devagar (como escolher um item num jogo) e os outros escurecem |
-| Arsenal (stack) | Faixas infinitas e nuvem 3D própria (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente, nome ao passar o mouse |
+| Topo | Nome sobe letra por letra de dentro de uma máscara e acompanha o mouse de leve; faixa com localização, foco e anos de experiência |
+| Menu | Seção atual marcada com um ponto, barra de progresso da rolagem |
+| Sobre | Foto em preto e branco que ganha cor ao passar o mouse, desliza com a rolagem e inclina com o cursor |
+| Missões | Cards em destaque com capa, inclinação suave e moldura de seleção (como escolher um item num jogo); demais projetos em lista |
+| Curiosidade | Mini Galaga numa "tela de fliperama" dentro de Missões: a nave segue o mouse só ali dentro e cada clique atira. Sem mouse, ela joga sozinha |
+| Experiência | Linhas que se destacam no hover, da mais recente para a mais antiga |
+| Stack | Colunas por senioridade e nuvem 3D (`ArsenalCloud`): arraste com inércia, clique num ícone para trazê-lo à frente |
+| Contato | Formulário que monta o e-mail (sem servidor), status e redes |
 
-O jogo pausa quando o topo sai da tela. Quem ativa "reduzir movimento" no sistema recebe a versão sem animações pesadas.
-
-## Componentes do Magic UI
-
-Instalados com `npx shadcn@latest add @magicui/<nome>` em `src/components/ui/`:
-
-| Componente | Onde |
-|---|---|
-| `terminal` | Terminal que digita o perfil no topo |
-| `border-beam` | Feixes de luz na borda do terminal e dos projetos em destaque |
-| `hyper-text` | Títulos pequenos das seções, que embaralham ao aparecer |
-| `shimmer-button` | Botão de e-mail no contato |
-
-Para adicionar mais: peça ao Claude Code (com o MCP do Magic UI ativo) ou rode `npx shadcn@latest add @magicui/<nome>`.
+Quem ativa "reduzir movimento" no sistema recebe a versão sem animações pesadas. A foto fica em `public/carlos.webp`.
 
 ## MCPs de front-end
 

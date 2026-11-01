@@ -5,6 +5,17 @@ export const profile = {
   nickname: 'Carlinhos',
   githubUser: 'CarlosEduardo00',
   location: 'Brasil',
+  since: 2022, // ano do primeiro commit
+  focus: 'Java · QA',
+  status: 'Analista de QA e Integrações',
+  tagline: ['testando, integrando e', 'construindo em Java.'], // a 2ª parte aparece em itálico
+  facts: [
+    ['nome', 'Carlos Silva'],
+    ['apelido', 'Carlinhos'],
+    ['atuação', 'Analista de QA e Integrações'],
+    ['formação', 'Análise e Desenvolvimento de Sistemas'],
+    ['já fui', 'Professor de programação'],
+  ],
   roles: ['Java Developer', 'QA Engineer', 'Analista de QA e Integrações', 'Ex-professor de programação'],
   headline:
     'Java Developer e QA Engineer. Desenvolvo em Java e Spring, testo e integro sistemas para que funcionem de ponta a ponta.',
@@ -196,21 +207,23 @@ export const timeline: Milestone[] = [
     tags: ['Banco de dados', 'SQL', 'Front-end', 'Back-end', 'Ensino'],
   },
   {
-    period: 'Hoje',
-    title: 'Analista de QA e Integrações',
-    text: 'Testo e integro sistemas no dia a dia: automação com Selenium, Java, validação de integrações entre serviços e consultas em PostgreSQL.',
-    tags: ['Java', 'Selenium', 'Integrações', 'PostgreSQL', 'QA'],
-  },
-  {
     period: '2026',
     title: 'Projetos pessoais',
     text: 'Hyrule Explorer, MU Explorer e MU Sentinel: back-end em Spring Boot, scrapers em Python, deploy na Cloudflare, visão computacional e releases automatizadas, com desenvolvimento assistido por IA.',
     tags: ['Spring Boot', 'TypeScript', 'Python', 'Cloudflare', 'IA'],
   },
+  {
+    period: 'Hoje',
+    title: 'Analista de QA e Integrações',
+    text: 'Testo e integro sistemas no dia a dia: automação com Selenium, Java, validação de integrações entre serviços e consultas em PostgreSQL.',
+    tags: ['Java', 'Selenium', 'Integrações', 'PostgreSQL', 'QA'],
+  },
 ]
 
-export const stack = {
-  'Back-end': ['Java', 'Spring Boot', 'Python', 'Node.js', 'PostgreSQL', 'SQLite', 'Flyway'],
-  'Front-end': ['React', 'TypeScript', 'Astro', 'Tailwind', 'Vite', 'HTML', 'CSS'],
-  'Qualidade e ferramentas': ['Selenium', 'pytest', 'Vitest', 'Docker', 'Git', 'Cloudflare', 'Claude Code'],
+// Stack em colunas, por senioridade (a 1ª coluna é a principal)
+export const stack: Record<string, string[]> = {
+  principal: ['Java', 'Spring Boot', 'Python', 'PostgreSQL', 'Selenium'],
+  'front-end': ['JavaScript', 'TypeScript', 'React', 'Astro', 'Tailwind', 'HTML e CSS'],
+  qualidade: ['pytest', 'Vitest', 'JSON Schema', 'SQLite', 'Flyway', 'Swagger'],
+  'infra e ia': ['Docker', 'Cloudflare', 'GitHub Actions', 'Git', 'Claude AI', 'Vercel'],
 }

@@ -1,27 +1,47 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
-import { HyperText } from '@/components/ui/hyper-text'
 
-export function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: ReactNode; children: ReactNode }) {
+export const ease = [0.22, 1, 0.36, 1] as const
+
+// Revela o conteúdo subindo de leve quando entra na tela
+export function Reveal({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
   return (
-    <section id={id} className="mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-6 md:py-32">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="mb-14"
-      >
-        <p className="mb-3 flex items-center gap-2 font-mono text-sm text-white">
-          <span className="text-white/35">{'//'}</span>
-          {/* Magic UI: letras embaralham ao aparecer e ao passar o mouse */}
-          <HyperText as="span" startOnView className="py-0 text-sm font-normal tracking-widest">
-            {eyebrow}
-          </HyperText>
-        </p>
-        <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">{title}</h2>
-      </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.8, delay, ease }}
+      className={className}
+    >
       {children}
+    </motion.div>
+  )
+}
+
+// Seção numerada: "01 / —— frase curta" e título grande em serifa terminando com um ponto colorido
+export function Section({ id, n, eyebrow, title, children, className = '' }: { id: string; n: string; eyebrow: string; title: ReactNode; children: ReactNode; className?: string }) {
+  return (
+    <section id={id} className={`scroll-mt-16 border-t border-line ${className}`}>
+      <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6 md:py-28">
+        <Reveal className="mb-12 md:mb-14">
+          <p className="mb-4 flex items-center gap-3 font-mono text-xs text-muted">
+            <span className="text-accent">{n}</span> /
+            <motion.span
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.2, ease }}
+              className="inline-block h-px w-10 origin-left bg-muted/60"
+            />
+            {eyebrow}
+          </p>
+          <h2 className="font-serif text-6xl leading-[0.95] tracking-tight sm:text-7xl md:text-8xl">
+            {title}
+            <span className="text-accent">.</span>
+          </h2>
+        </Reveal>
+        {children}
+      </div>
     </section>
   )
 }

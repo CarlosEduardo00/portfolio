@@ -1,130 +1,62 @@
-import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useSpring, useTransform, type MotionValue } from 'motion/react'
-import { useState, type PointerEvent, type ReactNode } from 'react'
-import { ArrowUpRight, Lock, Sparkles } from 'lucide-react'
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { useState, type PointerEvent } from 'react'
+import { ArrowUpRight, Lock } from 'lucide-react'
 import { projects, type Project } from '../data/profile'
-import { GithubIcon, Section } from './helpers'
-import { BorderBeam } from '@/components/ui/border-beam'
+import { GithubIcon, Reveal, Section, ease } from './helpers'
+import ArcadeBox from './space/ArcadeBox'
 
-const filters = ['Todos', 'Web', 'Python', 'Back-end', 'Front-end'] as const
+const filters = ['todos', 'web', 'python', 'back-end', 'front-end'] as const
+type Filter = (typeof filters)[number]
 
-// Molas suaves usadas nos cards
+const kind: Record<Project['category'], string> = {
+  Web: 'aplicação web',
+  Python: 'python',
+  'Back-end': 'back-end',
+  'Front-end': 'front-end',
+}
+
 const SOFT = { stiffness: 110, damping: 20, mass: 0.9 }
 const LIFT = { stiffness: 220, damping: 26 }
 
-// ---------- conteúdo do card ----------
-
 function Links({ p }: { p: Project }) {
   return (
-    <div className="flex shrink-0 gap-2">
+    <div className="flex items-center gap-4 font-mono text-[11px]">
       {p.repo ? (
-        <a href={p.repo} target="_blank" rel="noreferrer" aria-label={`Código de ${p.name}`} className="rounded-full border border-line p-2 text-white/60 transition duration-300 hover:scale-110 hover:border-white/40 hover:text-white">
-          <GithubIcon className="size-4" />
+        <a href={p.repo} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-muted transition hover:text-accent">
+          <GithubIcon className="size-3.5" /> repositório
         </a>
       ) : (
-        <span title="Repositório privado" className="rounded-full border border-line p-2 text-white/30">
-          <Lock className="size-4" />
+        <span className="flex items-center gap-1.5 text-muted/60" title="Repositório privado">
+          <Lock className="size-3.5" /> privado
         </span>
       )}
       {p.live && (
-        <a href={p.live} target="_blank" rel="noreferrer" aria-label={`Abrir ${p.name}`} className="rounded-full border border-line p-2 text-white/60 transition duration-300 hover:rotate-45 hover:border-white/40 hover:text-white">
-          <ArrowUpRight className="size-4" />
+        <a href={p.live} target="_blank" rel="noreferrer" className="group/l flex items-center gap-1 text-muted transition hover:text-accent">
+          <ArrowUpRight className="size-3.5 transition-transform group-hover/l:-translate-y-0.5 group-hover/l:translate-x-0.5" /> {p.live.includes('releases') ? 'download' : 'demo'}
         </a>
       )}
     </div>
   )
 }
 
-function Meta({ p }: { p: Project }) {
+function Tags({ items, active }: { items: string[]; active?: boolean }) {
   return (
-    <div className="mb-2 flex flex-wrap items-center gap-2 whitespace-nowrap font-mono text-xs text-white/40">
-      <span className="size-2 rounded-full" style={{ background: p.featured ? '#fff' : '#737373', boxShadow: p.featured ? '0 0 10px #fff' : 'none' }} />
-      {p.category} · {p.year}
-      {p.featured && (
-        <span className="inline-flex items-center gap-1 rounded-full bg-white/5 px-2 py-0.5 text-white">
-          <Sparkles className="size-3" /> missão principal
-        </span>
-      )}
-    </div>
-  )
-}
-
-function Stack({ p, active }: { p: Project; active?: boolean }) {
-  return (
-    <div className="relative mt-5 flex flex-wrap gap-1.5">
-      {p.stack.map((s, i) => (
+    <div className="flex flex-wrap gap-1.5">
+      {items.map((s, i) => (
         <motion.span
           key={s}
-          animate={active ? { y: -2, borderColor: 'rgba(255,255,255,0.3)' } : { y: 0, borderColor: 'rgba(255,255,255,0.1)' }}
-          transition={{ ...LIFT, delay: active ? i * 0.025 : 0 }}
-          className="rounded-md border bg-white/[0.03] px-2 py-0.5 font-mono text-[11px] text-white/60"
+          animate={active ? { y: -2, borderColor: 'rgba(233,164,106,0.45)' } : { y: 0, borderColor: 'rgba(255,255,255,0.09)' }}
+          transition={{ ...LIFT, delay: active ? i * 0.02 : 0 }}
+          className="rounded-full border px-2.5 py-0.5 font-mono text-[10.5px] text-muted"
         >
-          {s}
+          {s.toLowerCase()}
         </motion.span>
       ))}
     </div>
   )
 }
 
-function Highlights({ p }: { p: Project }) {
-  if (!p.highlights) return null
-  return (
-    <ul className="relative mt-4 space-y-1.5 text-sm text-white/55">
-      {p.highlights.map((h) => (
-        <li key={h} className="flex items-center gap-2">
-          <span className="text-white">▹</span> {h}
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-function FullContent({ p, active, depth }: { p: Project; active: boolean; depth?: (z: number) => object }) {
-  const z = depth ?? (() => ({}))
-  return (
-    <>
-      <div className="relative flex items-start justify-between gap-3" style={z(40)}>
-        <div>
-          <Meta p={p} />
-          <h3 className={`font-semibold tracking-tight ${p.featured ? 'text-2xl' : 'text-xl'}`}>{p.name}</h3>
-          <p className="mt-1 text-sm text-white/50">{p.tagline}</p>
-        </div>
-        <Links p={p} />
-      </div>
-      <p className="relative mt-4 flex-1 text-white/65" style={z(25)}>
-        {p.description}
-      </p>
-      <Highlights p={p} />
-      <div style={z(30)}>
-        <Stack p={p} active={active} />
-      </div>
-    </>
-  )
-}
-
-function Beams({ p, index }: { p: Project; index: number }) {
-  if (!p.featured) return null
-  return (
-    <>
-      <BorderBeam duration={10} delay={index * 2} size={160} colorFrom="#ffffff" colorTo="#525252" />
-      <BorderBeam duration={10} delay={index * 2 + 5} size={160} colorFrom="#a3a3a3" colorTo="#ffffff" />
-    </>
-  )
-}
-
-// borda luminosa que segue o cursor
-function Shell({ children, px, py, active, className = '' }: { children: ReactNode; px: MotionValue<string>; py: MotionValue<string>; active: boolean; className?: string }) {
-  const border = useMotionTemplate`radial-gradient(320px circle at ${px} ${py}, rgb(255 255 255 / 0.75), transparent 60%)`
-  return (
-    <div className={`relative h-full rounded-2xl p-px ${className}`}>
-      <div className="absolute inset-0 rounded-2xl bg-line" />
-      <motion.div className="absolute inset-0 rounded-2xl" style={{ background: border }} animate={{ opacity: active ? 1 : 0 }} transition={{ duration: 0.5 }} />
-      {children}
-    </div>
-  )
-}
-
-// ---------- destaque de seleção (como escolher um item num jogo) ----------
-
+// Moldura de seleção que "respira", como escolher um item num jogo
 function SelectFrame({ active }: { active: boolean }) {
   return (
     <AnimatePresence>
@@ -132,18 +64,17 @@ function SelectFrame({ active }: { active: boolean }) {
         <motion.div
           key="select"
           aria-hidden
-          className="pointer-events-none absolute -inset-[7px] rounded-[22px]"
-          initial={{ opacity: 0, scale: 1.05 }}
+          className="pointer-events-none absolute -inset-[6px] rounded-[20px]"
+          initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 1.03, transition: { duration: 0.22 } }}
+          exit={{ opacity: 0, scale: 1.02, transition: { duration: 0.2 } }}
           transition={{ type: 'spring', stiffness: 260, damping: 24 }}
         >
-          {/* moldura fina com brilho que "respira" devagar */}
           <motion.div
-            className="absolute inset-0 rounded-[22px] border border-white/70"
+            className="absolute inset-0 rounded-[20px] border border-accent/70"
             animate={{
-              opacity: [0.65, 1, 0.65],
-              boxShadow: ['0 0 14px 0 rgb(255 255 255 / 0.12)', '0 0 28px 2px rgb(255 255 255 / 0.28)', '0 0 14px 0 rgb(255 255 255 / 0.12)'],
+              opacity: [0.6, 1, 0.6],
+              boxShadow: ['0 0 12px 0 rgb(233 164 106 / 0.10)', '0 0 26px 2px rgb(233 164 106 / 0.25)', '0 0 12px 0 rgb(233 164 106 / 0.10)'],
             }}
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           />
@@ -153,42 +84,38 @@ function SelectFrame({ active }: { active: boolean }) {
   )
 }
 
-type CardProps = { p: Project; index: number; mx: MotionValue<number>; my: MotionValue<number>; active: boolean }
-
-// Holograma: inclinação 3D suave, o card sobe e um reflexo atravessa a superfície
-
-function HoloCard({ p, index, mx, my, active }: CardProps) {
-  const rx = useSpring(useTransform(my, [0, 1], [6, -6]), SOFT)
-  const ry = useSpring(useTransform(mx, [0, 1], [-6, 6]), SOFT)
-  const px = useTransform(mx, (v) => `${v * 100}%`)
-  const py = useTransform(my, (v) => `${v * 100}%`)
-  const glow = useMotionTemplate`radial-gradient(420px circle at ${px} ${py}, rgb(255 255 255 / 0.09), transparent 60%)`
-  // faixa de reflexo que atravessa o card conforme o mouse anda
-  const sheenX = useSpring(useTransform(mx, [0, 1], ['-60%', '160%']), SOFT)
+// Capa do card: grade de pontos e o nome enorme em itálico, que desliza com o mouse
+function Cover({ p, index, mx, active }: { p: Project; index: number; mx: MotionValue<number>; active: boolean }) {
+  const x = useSpring(useTransform(mx, [0, 1], [10, -10]), SOFT)
   return (
-    <motion.div style={{ rotateX: rx, rotateY: ry, transformStyle: 'preserve-3d' }} animate={{ y: active ? -8 : 0, scale: active ? 1.015 : 1 }} transition={LIFT} className="relative h-full">
-      <SelectFrame active={active} />
-      <Shell px={px} py={py} active={active}>
-        <div className="relative flex h-full flex-col overflow-hidden rounded-2xl bg-panel p-6" style={{ transformStyle: 'preserve-3d' }}>
-          <motion.div className="pointer-events-none absolute inset-0" style={{ background: glow }} animate={{ opacity: active ? 1 : 0 }} transition={{ duration: 0.5 }} />
-          <motion.div
-            className="pointer-events-none absolute inset-y-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/[0.07] to-transparent"
-            style={{ left: sheenX }}
-            animate={{ opacity: active ? 1 : 0 }}
-            transition={{ duration: 0.4 }}
-          />
-          <Beams p={p} index={index} />
-          <FullContent p={p} active={active} depth={(z) => ({ transform: `translateZ(${z}px)` })} />
-        </div>
-      </Shell>
-    </motion.div>
+    <div className="relative h-44 overflow-hidden border-b border-line bg-panel-2 [background-image:radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)] [background-size:14px_14px]">
+      <motion.span
+        style={{ x }}
+        animate={{ opacity: active ? 0.9 : 0.55, scale: active ? 1.04 : 1 }}
+        transition={{ duration: 0.6, ease }}
+        className="absolute -bottom-4 left-4 origin-bottom-left whitespace-nowrap font-serif text-7xl italic text-cream/20"
+      >
+        {p.name}
+      </motion.span>
+      <motion.div
+        aria-hidden
+        animate={{ opacity: active ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+        className="absolute inset-0 bg-[radial-gradient(60%_80%_at_70%_20%,rgb(233_164_106/0.16),transparent_70%)]"
+      />
+      <span className="absolute bottom-3 left-3 rounded-full border border-white/10 bg-ink/80 px-2.5 py-1 font-mono text-[10.5px] backdrop-blur">
+        <span className="text-accent">0{index + 1}</span> · {kind[p.category]}
+      </span>
+    </div>
   )
 }
 
-function ProjectCard({ p, index }: { p: Project; index: number }) {
+function FeaturedCard({ p, index }: { p: Project; index: number }) {
   const mx = useMotionValue(0.5)
   const my = useMotionValue(0.5)
   const [active, setActive] = useState(false)
+  const rx = useSpring(useTransform(my, [0, 1], [4, -4]), SOFT)
+  const ry = useSpring(useTransform(mx, [0, 1], [-4, 4]), SOFT)
 
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === 'touch') return
@@ -196,61 +123,130 @@ function ProjectCard({ p, index }: { p: Project; index: number }) {
     mx.set((e.clientX - r.left) / r.width)
     my.set((e.clientY - r.top) / r.height)
   }
-  const leave = () => {
-    setActive(false)
-    mx.set(0.5)
-    my.set(0.5)
-  }
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 36, scale: 0.97, filter: 'blur(8px)' }}
-      // ao terminar, o filtro sai de vez: com qualquer filtro ativo o navegador achata o 3D e suaviza o texto
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)', transitionEnd: { filter: 'none' } }}
-      exit={{ opacity: 0, scale: 0.94, filter: 'blur(6px)', transition: { duration: 0.3 } }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.25 } }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ type: 'spring', stiffness: 90, damping: 18, mass: 0.9, delay: index * 0.07, layout: { type: 'spring', stiffness: 160, damping: 26 } }}
-      className={`mission [perspective:1200px] ${p.featured ? 'md:col-span-2 lg:col-span-1' : ''}`}
+      transition={{ duration: 0.8, delay: index * 0.08, ease, layout: { type: 'spring', stiffness: 160, damping: 26 } }}
+      className="mission [perspective:1200px]"
       onPointerEnter={(e) => e.pointerType !== 'touch' && setActive(true)}
       onPointerMove={onMove}
-      onPointerLeave={leave}
-      // no celular, tocar seleciona o card
-      onClick={(e) => {
-        if ((e.target as Element).closest('a')) return
-        if (window.matchMedia('(hover: none)').matches) setActive((a) => !a)
+      onPointerLeave={() => {
+        setActive(false)
+        mx.set(0.5)
+        my.set(0.5)
       }}
     >
       <div className="mission-body h-full transition-[opacity,filter] duration-300">
-        <HoloCard p={p} index={index} mx={mx} my={my} active={active} />
+        <motion.article style={{ rotateX: rx, rotateY: ry }} animate={{ y: active ? -6 : 0 }} transition={LIFT} className="relative h-full">
+          <SelectFrame active={active} />
+          <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel">
+            <Cover p={p} index={index} mx={mx} active={active} />
+            <div className="flex flex-1 flex-col p-5">
+              <p className="font-mono text-[11px] text-muted">
+                {kind[p.category]} · {p.year}
+              </p>
+              <h3 className="mt-1 font-serif text-3xl leading-tight">{p.name}</h3>
+              <p className="mt-2 font-mono text-[12.5px] leading-relaxed text-muted">{p.description}</p>
+              {p.highlights && (
+                <ul className="mt-3 space-y-1 font-mono text-[11.5px] text-cream/80">
+                  {p.highlights.map((h) => (
+                    <li key={h} className="flex gap-2">
+                      <span className="text-accent">↳</span> {h}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <div className="mt-auto pt-5">
+                <Tags items={p.stack} active={active} />
+                <div className="mt-4 border-t border-line pt-3">
+                  <Links p={p} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.article>
       </div>
     </motion.div>
   )
 }
 
+// Projetos menores: uma linha por projeto, estilo índice
+function Row({ p, i }: { p: Project; i: number }) {
+  return (
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.2 } }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: i * 0.04, ease }}
+      className="group relative grid gap-2 border-t border-line py-5 md:grid-cols-[5rem_1fr_1.5fr_10rem] md:items-center md:gap-6"
+    >
+      <span className="pointer-events-none absolute inset-x-0 inset-y-0 origin-left scale-x-0 bg-gradient-to-r from-accent/[0.07] to-transparent transition-transform duration-500 group-hover:scale-x-100" />
+      <span className="relative font-mono text-[11px] text-muted">
+        <span className="text-accent">●</span> {p.year}
+      </span>
+      <h4 className="relative font-serif text-2xl leading-tight transition-transform duration-300 group-hover:translate-x-1.5">
+        {p.name} <em className="text-base text-muted">{kind[p.category]}</em>
+      </h4>
+      <p className="relative font-mono text-[12px] text-muted">
+        {p.tagline} · <span className="text-cream/70">{p.stack.join(', ').toLowerCase()}</span>
+      </p>
+      <div className="relative md:flex md:justify-end">
+        <Links p={p} />
+      </div>
+    </motion.li>
+  )
+}
+
 export default function Projects() {
-  const [filter, setFilter] = useState<(typeof filters)[number]>('Todos')
-  const list = projects.filter((p) => filter === 'Todos' || p.category === filter)
+  const [filter, setFilter] = useState<Filter>('todos')
+  const list = projects.filter((p) => filter === 'todos' || p.category.toLowerCase() === filter)
+  const featured = list.filter((p) => p.featured)
+  const others = list.filter((p) => !p.featured)
 
   return (
-    <Section id="projetos" eyebrow="missões" title={<>Missões <span className="text-gradient">concluídas</span></>}>
-      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap gap-2">
-          {filters.map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className="relative rounded-full px-4 py-2 text-sm transition-colors">
-              {filter === f && <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-white" transition={{ type: 'spring', stiffness: 300, damping: 30 }} />}
-              <span className={`relative ${filter === f ? 'font-medium text-ink' : 'text-white/60 hover:text-white'}`}>{f}</span>
-            </button>
-          ))}
+    <Section id="projetos" n="02" eyebrow="o que andei construindo" title={<>Missões <em className="text-accent">concluídas</em></>}>
+      <Reveal className="mb-10 flex flex-wrap gap-1.5">
+        {filters.map((f) => (
+          <button key={f} onClick={() => setFilter(f)} className="relative rounded-full border border-line px-3.5 py-1.5 font-mono text-xs">
+            {filter === f && <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-cream" transition={{ type: 'spring', stiffness: 320, damping: 30 }} />}
+            <span className={`relative ${filter === f ? 'text-ink' : 'text-muted hover:text-cream'}`}>{f}</span>
+          </button>
+        ))}
+      </Reveal>
+
+      {featured.length > 0 && (
+        <motion.div layout className="missions grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {featured.map((p, i) => (
+              <FeaturedCard key={p.name} p={p} index={i} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      )}
+
+      {others.length > 0 && (
+        <div className="mt-16">
+          <p className="mb-2 font-mono text-xs text-muted">
+            <span className="text-accent">+</span> outras missões · {others.length}
+          </p>
+          <motion.ul layout className="border-b border-line">
+            <AnimatePresence mode="popLayout">
+              {others.map((p, i) => (
+                <Row key={p.name} p={p} i={i} />
+              ))}
+            </AnimatePresence>
+          </motion.ul>
         </div>
-      </div>
-      <motion.div layout className="missions grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
-          {list.map((p, i) => (
-            <ProjectCard key={p.name} p={p} index={i} />
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      )}
+
+      <ArcadeBox />
     </Section>
   )
 }

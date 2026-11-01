@@ -9,12 +9,13 @@ type Burst = { x: number; y: number; t: number }
 const BURST_TIME = 0.42 // duração da micro explosão do clique (s)
 
 const LASER_SPEED = 760
+const TOP = 64 // altura da primeira fileira de inimigos
 const PLAYER_IDLE = 2.5 // sem mexer o mouse por esse tempo, a nave joga sozinha
 const MAX_BANK = 0.32 // inclinação máxima nas curvas (radianos)
 
-// Mini Galaga do topo: a nave segue o cursor por todo o topo (até a formação de inimigos) e atira.
-// Se o cursor sai do topo (inclusive rolando a página), ela decola e some pelo alto; quando ele volta, ela reentra por baixo.
-// Sem mouse (celular) ou com o mouse parado, ela joga sozinha.
+// Mini Galaga dentro de uma caixa (curiosidade na seção de missões).
+// Com o cursor dentro da caixa, a nave segue o mouse (até a formação de inimigos) e cada clique atira.
+// Com o cursor fora, parado ou no celular, ela joga sozinha.
 // Movimento com física de mola: aceleração, inércia, inclinação nas curvas e propulsor.
 export default function GalagaField() {
   const ref = useRef<HTMLCanvasElement>(null)
@@ -41,7 +42,6 @@ export default function GalagaField() {
     let baseY = 0
     let client: { x: number; y: number } | null = null // posição do cursor na janela
     let lastPointer = -99
-    let gone = false // nave decolou e saiu pelo alto
     let lockedTarget: Enemy | null = null
 
     let fireCd = 1.2
@@ -63,7 +63,7 @@ export default function GalagaField() {
       const sway = Math.sin(at * 0.7) * Math.min(60, w * 0.05)
       const bob = Math.sin(at * 2 + e.col * 0.6) * 3
       const enterOffset = Math.max(0, e.enter) * -260
-      return { x: startX + e.col * sp + sway, y: 96 + e.row * 34 + bob + enterOffset }
+      return { x: startX + e.col * sp + sway, y: TOP + e.row * 34 + bob + enterOffset }
     }
 
     const spawn = () => {
@@ -75,7 +75,7 @@ export default function GalagaField() {
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const r = section.getBoundingClientRect()
-      w = window.innerWidth
+      w = r.width
       h = r.height
       canvas.width = w * dpr
       canvas.height = h * dpr
@@ -130,34 +130,10 @@ export default function GalagaField() {
       const alive = enemies.filter((e) => e.alive && e.enter <= 0)
       const shipH = SHIP.length * px
 
-      // cursor relativo ao topo (recalculado todo quadro: acompanha a rolagem)
+      // cursor relativo à caixa (recalculado todo quadro: acompanha a rolagem)
       const r = section.getBoundingClientRect()
-      const inside = !!client && client.y >= r.top && client.y <= r.bottom
-      const local = inside && client ? { x: client.x, y: client.y - r.top } : null
-      const launching = !!client && !inside
-
-      if (launching) {
-        // ---- decolagem: acelera para cima e some ----
-        ship.vy = Math.max(-1100, ship.vy - 1500 * dt)
-        ship.vx *= Math.exp(-3 * dt)
-        ship.x += ship.vx * dt
-        ship.y += ship.vy * dt
-        ship.bank += (0 - ship.bank) * Math.min(1, dt * 8)
-        if (ship.y < -shipH - 40) gone = true
-        if (!gone && Math.random() < 0.95) {
-          trail.push({ x: ship.x + (Math.random() - 0.5) * px * 3, y: ship.y + shipH + 2, vx: (Math.random() - 0.5) * 30, vy: 120 + Math.random() * 80, life: 0.9, size: px })
-        }
-        updateEffects(dt)
-        return
-      }
-      if (gone) {
-        // reentra por baixo
-        gone = false
-        ship.y = h + 30
-        ship.vy = -200
-        ship.x = local ? local.x : w / 2
-        ship.vx = 0
-      }
+      const inside = !!client && client.x >= r.left && client.x <= r.right && client.y >= r.top && client.y <= r.bottom
+      const local = inside && client ? { x: client.x - r.left, y: client.y - r.top } : null
 
       const auto = !local || t - lastPointer > PLAYER_IDLE
 
@@ -166,7 +142,7 @@ export default function GalagaField() {
       let goalY = baseY
       let aligned = false
       // limite de cima: logo abaixo da formação de inimigos
-      const minY = 96 + rows * 34 + ENEMY_A.length * px + 40
+      const minY = TOP + rows * 34 + ENEMY_A.length * px + 40
       if (!auto && local) {
         goalX = local.x
         goalY = Math.min(baseY, Math.max(minY, local.y - shipH / 2))
@@ -286,7 +262,7 @@ export default function GalagaField() {
       ctx.fillRect(-px / 2, shipH / 2, px, flame)
       ctx.fillStyle = 'rgba(255,255,255,0.35)'
       ctx.fillRect(-px * 1.5, shipH / 2, px * 3, flame * 0.55)
-      drawSprite(ctx, SHIP, 0, -shipH / 2, px, '#ffffff', '#7a7a7a')
+      drawSprite(ctx, SHIP, 0, -shipH / 2, px, '#ffffff', '#e9a46a')
       // clarão no bico ao atirar
       if (ship.flash > 0) {
         ctx.fillStyle = `rgba(255,255,255,${ship.flash})`
@@ -340,14 +316,14 @@ export default function GalagaField() {
           ctx.fillRect(b.x - 1, b.y - 9 * f, 2, 18 * f)
         }
       }
-      if (!gone) drawShip()
+      drawShip()
       // placar
       ctx.font = '600 11px "JetBrains Mono", monospace'
       ctx.fillStyle = 'rgba(255,255,255,0.45)'
       ctx.textAlign = 'left'
-      ctx.fillText(`SCORE ${String(score).padStart(6, '0')}`, 20, 84)
+      ctx.fillText(`SCORE ${String(score).padStart(6, '0')}`, 18, 30)
       ctx.textAlign = 'right'
-      ctx.fillText(`HI ${String(hi).padStart(6, '0')}`, w - 20, 84)
+      ctx.fillText(`HI ${String(hi).padStart(6, '0')}`, w - 18, 30)
     }
 
     const loop = (now: number) => {
@@ -367,12 +343,12 @@ export default function GalagaField() {
     }
     const onDown = (e: PointerEvent) => {
       const r = section.getBoundingClientRect()
-      if (e.clientY < r.top || e.clientY > r.bottom) return
-      clickBurst(e.clientX, e.clientY - r.top)
+      if (e.clientY < r.top || e.clientY > r.bottom || e.clientX < r.left || e.clientX > r.right) return
+      clickBurst(e.clientX - r.left, e.clientY - r.top)
       if ((e.target as Element).closest('a,button,input')) return
       if (e.pointerType !== 'touch') client = { x: e.clientX, y: e.clientY }
       lastPointer = t
-      if (!gone) fire()
+      fire()
     }
     // rolar a página conta como "mexer": a nave continua seguindo o cursor
     const onScroll = () => {
@@ -407,5 +383,5 @@ export default function GalagaField() {
     }
   }, [])
 
-  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2" />
+  return <canvas ref={ref} aria-hidden className="pointer-events-none absolute inset-0" />
 }

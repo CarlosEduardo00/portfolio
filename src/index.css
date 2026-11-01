@@ -1,106 +1,59 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
-
 @theme {
-  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  /* Paleta: preto puro com detalhes em branco (mesmo visual do README do GitHub) */
-  --color-ink: #000000;
-  --color-panel: #0a0a0a;
-  --color-line: rgb(255 255 255 / 0.1);
 
-  /* Cores de tema esperadas pelos componentes do shadcn / Magic UI */
-  --color-background: #0a0a0a;
-  --color-foreground: #ededed;
-  --color-border: rgb(255 255 255 / 0.1);
-  --color-muted-foreground: rgb(255 255 255 / 0.5);
-  --color-primary: #ffffff;
-  --color-primary-foreground: #000000;
-  --color-accent: rgb(255 255 255 / 0.06);
-  --color-accent-foreground: #ffffff;
-  --color-ring: #ffffff;
+  /* Paleta: grafite quase preto, texto creme e um destaque quente (tom da foto) */
+  --color-ink: #0c0c0d;
+  --color-panel: #131315;
+  --color-panel-2: #18181b;
+  --color-line: rgb(255 255 255 / 0.09);
+  --color-cream: #f2ede6;
+  --color-muted: #9a958e;
+  --color-accent: #e9a46a;
 }
 
 html {
   scroll-behavior: smooth;
-  overflow-x: clip; /* camadas de largura total (partículas) não criam rolagem lateral */
+  overflow-x: clip;
   background: var(--color-ink);
   color-scheme: dark;
 }
 
 body {
   background: var(--color-ink);
-  color: #ededed;
+  color: var(--color-cream);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgb(255 255 255 / 0.25);
+  background: rgb(233 164 106 / 0.35);
+  color: #fff;
 }
 
-.text-gradient {
-  background: linear-gradient(100deg, #ffffff 20%, #6b6b6b 50%, #ffffff 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shine 6s linear infinite;
+/* Grão bem leve por cima de tudo: dá textura de papel ao fundo escuro */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-}
-
-.marquee {
-  mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+/* Missões: ao selecionar um card, os outros escurecem (foco de menu de jogo) */
+.missions:has(.mission:hover) .mission:not(:hover) .mission-body {
+  opacity: 0.5;
+  filter: grayscale(1) brightness(0.85);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .text-gradient {
-    animation: none;
-  }
   html {
     scroll-behavior: auto;
   }
-}
-
-@theme inline {
-  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
-  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
-  @keyframes shimmer-slide {
-  to {
-    transform: translate(calc(100cqw - 100%), 0);
-    }
-  }
-  @keyframes spin-around {
-  0% {
-    transform: translateZ(0) rotate(0);
-    }
-  15%, 35% {
-    transform: translateZ(0) rotate(90deg);
-    }
-  65%, 85% {
-    transform: translateZ(0) rotate(270deg);
-    }
-  100% {
-    transform: translateZ(0) rotate(360deg);
-    }
-  }
-}
-/* Missões: ao selecionar um card, os outros escurecem um pouco (foco de menu de jogo) */
-.missions:has(.mission:hover) .mission:not(:hover) .mission-body {
-  opacity: 0.55;
-  filter: grayscale(1) brightness(0.85);
 }

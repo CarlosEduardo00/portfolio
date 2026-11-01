@@ -1,9 +1,9 @@
 import { motion } from 'motion/react'
 import { stack } from '../data/profile'
-import { Section } from './helpers'
+import { Reveal, Section, ease } from './helpers'
 import ArsenalCloud, { type CloudItem } from './ArsenalCloud'
 
-// Ícones do Simple Icons, todos em branco para combinar com o tema preto e branco
+// Ícones do Simple Icons para a nuvem 3D
 const tech: [string, string][] = [
   ['openjdk', 'Java'], ['spring', 'Spring Boot'], ['python', 'Python'], ['nodedotjs', 'Node.js'], ['postgresql', 'PostgreSQL'],
   ['sqlite', 'SQLite'], ['flyway', 'Flyway'], ['react', 'React'], ['typescript', 'TypeScript'], ['astro', 'Astro'],
@@ -11,79 +11,52 @@ const tech: [string, string][] = [
   ['selenium', 'Selenium'], ['pytest', 'pytest'], ['vitest', 'Vitest'], ['docker', 'Docker'], ['git', 'Git'],
   ['github', 'GitHub'], ['cloudflare', 'Cloudflare'], ['claude', 'Claude AI'], ['opencv', 'OpenCV'], ['qt', 'Qt'],
 ]
-const cloudItems: CloudItem[] = tech.map(([slug, name]) => ({ name, src: `https://cdn.simpleicons.org/${slug}/white` }))
-
-const all = Object.values(stack).flat()
-
-function Row({ items, reverse }: { items: string[]; reverse?: boolean }) {
-  const doubled = [...items, ...items]
-  return (
-    <div className="marquee overflow-hidden py-2">
-      <motion.div
-        className="flex w-max gap-3"
-        animate={{ x: reverse ? ['-50%', '0%'] : ['0%', '-50%'] }}
-        transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
-      >
-        {doubled.map((s, i) => (
-          <span key={i} className="whitespace-nowrap rounded-xl border border-line bg-panel/70 px-5 py-3 font-mono text-sm text-white/70">
-            {s}
-          </span>
-        ))}
-      </motion.div>
-    </div>
-  )
-}
+const cloudItems: CloudItem[] = tech.map(([slug, name]) => ({ name, src: `https://cdn.simpleicons.org/${slug}/f2ede6` }))
 
 export default function Stack() {
+  const groups = Object.entries(stack)
   return (
-    <Section id="stack" eyebrow="arsenal" title={<>Arsenal do <span className="text-gradient">dia a dia</span></>}>
-      <div className="-mx-4 mb-14 space-y-2 sm:-mx-6">
-        <Row items={all.slice(0, Math.ceil(all.length / 2))} />
-        <Row items={all.slice(Math.ceil(all.length / 2))} reverse />
-      </div>
-      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,420px)_1fr]">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="flex flex-col items-center gap-3"
-      >
-        {/* Arraste para girar (com inércia); clique num ícone para trazê-lo à frente */}
-        <div className="flex w-full justify-center">
-          <ArsenalCloud items={cloudItems} />
-        </div>
-        <p className="font-mono text-xs text-white/35">arraste para girar · clique num ícone</p>
-      </motion.div>
-      <div className="grid gap-5">
-        {Object.entries(stack).map(([group, items], gi) => (
-          <motion.div
-            key={group}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: gi * 0.12, duration: 0.6 }}
-            className="rounded-2xl border border-line bg-panel/60 p-6 backdrop-blur"
-          >
-            <h3 className="mb-4 font-semibold">{group}</h3>
-            <div className="flex flex-wrap gap-2">
-              {items.map((s, i) => (
-                <motion.span
-                  key={s}
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: gi * 0.12 + i * 0.05, type: 'spring', stiffness: 300 }}
-                  whileHover={{ scale: 1.1, rotate: -2 }}
-                  className="cursor-default rounded-full bg-white/5 px-3 py-1.5 text-sm text-white/70 hover:bg-white/10 hover:text-white"
-                >
-                  {s}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-        ))}
-      </div>
+    <Section id="stack" n="04" eyebrow="ferramentas que uso bem" title="Stack">
+      <div className="grid items-center gap-10 lg:grid-cols-[1.7fr_1fr]">
+        <Reveal>
+          <div className="grid grid-cols-2 overflow-hidden rounded-2xl border border-line bg-panel/60 md:grid-cols-4">
+            {groups.map(([group, items], gi) => (
+              <div key={group} className={`p-5 sm:p-6 ${gi % 2 ? 'border-l border-line' : ''} ${gi > 1 ? 'border-t border-line md:border-t-0' : ''} ${gi === 2 ? 'md:border-l' : ''}`}>
+                <h3 className="mb-4 font-mono text-xs text-accent">
+                  <span className="text-muted">~</span> {group}
+                </h3>
+                <ul className="space-y-2.5">
+                  {items.map((s, i) => (
+                    <motion.li
+                      key={s}
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: gi * 0.08 + i * 0.04, ease }}
+                      className="group flex cursor-default items-center gap-2 text-sm font-medium"
+                    >
+                      <span className="size-1 rounded-full bg-muted transition-all duration-300 group-hover:w-3 group-hover:bg-accent" />
+                      <span className="transition-colors group-hover:text-accent">{s}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease }}
+          className="flex flex-col items-center gap-3"
+        >
+          {/* arraste para girar (com inércia); clique num ícone para trazê-lo à frente */}
+          <div className="flex w-full justify-center">
+            <ArsenalCloud items={cloudItems} max={380} />
+          </div>
+          <p className="font-mono text-[11px] text-muted">arraste para girar · clique num ícone</p>
+        </motion.div>
       </div>
     </Section>
   )
