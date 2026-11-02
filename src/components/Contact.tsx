@@ -178,7 +178,10 @@ export default function Contact() {
             {profile.name}
             <span className="text-accent">.</span>
           </span>
-          <span>© {new Date().getFullYear()} · feito com react, tailwind e motion</span>
+          <span>
+            © {new Date().getFullYear()} {profile.name} · todos os direitos reservados
+            <span className="hidden sm:inline"> · feito com react, tailwind e motion</span>
+          </span>
         </div>
       </footer>
     </>

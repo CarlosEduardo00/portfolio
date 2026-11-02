@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
     "cn": "^0.5.1",
     "lucide-react": "^1.66.0",
